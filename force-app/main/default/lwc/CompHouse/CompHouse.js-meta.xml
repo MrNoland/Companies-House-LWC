@@ -3,7 +3,7 @@
     <!-- The apiVersion may need to be increased for the current release -->
     <apiVersion>53.0</apiVersion>
     <isExposed>true</isExposed>
-    <masterLabel>App</masterLabel>
+    <masterLabel>Companies House</masterLabel>
     <targets>
         <target>lightning__AppPage</target>
         <target>lightning__RecordPage</target>
