@@ -1,0 +1,25 @@
+<template>
+    <lightning-tabset variant="scoped">
+        <lightning-tab label="Overview">
+            howdy duty
+        </lightning-tab>
+        <lightning-tab label="Filing History">
+            <div style="height: 300px;">
+                <lightning-datatable key-field="id" data={data} columns={columns}>
+                </lightning-datatable>
+            </div>
+        </lightning-tab>
+        <lightning-tab label="Offiecrs">
+            Officer Table
+        </lightning-tab>
+        <lightning-tab label="Beneficial Owners">
+            Beneficial Owners Table
+        </lightning-tab>
+        <lightning-tab label="Charges">
+            Charges Table
+        </lightning-tab>
+        <lightning-tab label="Insolvency">
+            Insolvency Table
+        </lightning-tab>
+    </lightning-tabset>
+</template>
