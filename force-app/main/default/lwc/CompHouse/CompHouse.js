@@ -1,10 +1,9 @@
-import { LightningElement } from 'lwc';
-//import fetch from 'node-fetch';
+import { LightningElement, api } from 'lwc';
 
 const columns = [
-    { label: 'Label', fieldName: 'name' },
-    { label: 'Website', fieldName: 'website', type: 'url' },
-    { label: 'Phone', fieldName: 'phone', type: 'phone' },
+    { label: 'Name', fieldName: 'name' },
+    { label: 'Category', fieldName: 'category'},
+    { label: 'Pages', fieldName: 'pages'},
 ];
 
 const data = [
@@ -14,23 +13,10 @@ const data = [
   }
 ]
 
-console.log("howdy");
-
-
-/*
-async function dome() {
-    let url = 'https://api.company-information.service.gov.uk/company/06559846';
-    let AuthKey = 'b3a3aaad-f3ff-4ecf-908e-5dfb560af870:';
-    let response = await fetch(url, {method:'GET', 
-    headers: {'Authorization': 'Basic ' + btoa(AuthKey)}});
-    let resp = await response.json();
-    return resp;
-}
-console.log(dome());
-*/
-
 
 export default class TabsetScoped extends LightningElement {
-  data = data;
-  columns = columns;
+    @api
+    columns = columns;
+
+    @api filing_data
 }

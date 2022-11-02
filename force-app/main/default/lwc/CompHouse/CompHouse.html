@@ -1,11 +1,11 @@
 <template>
     <lightning-tabset variant="scoped">
         <lightning-tab label="Overview">
-            howdy duty
+            {filing_data}
         </lightning-tab>
         <lightning-tab label="Filing History">
             <div style="height: 300px;">
-                <lightning-datatable key-field="id" data={data} columns={columns}>
+                <lightning-datatable key-field="id" data={filing_data} columns={columns}>
                 </lightning-datatable>
             </div>
         </lightning-tab>
