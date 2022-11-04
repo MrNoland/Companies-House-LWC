@@ -6,9 +6,11 @@
     <masterLabel>Companies House</masterLabel>
     <description>This component is used to view the Companies House details of a particular company</description>
     <targets>
-        <target>lightning__AppPage</target>
         <target>lightning__RecordPage</target>
-        <target>lightning__HomePage</target>
-        <target>lightning__FlowScreen</target> 
     </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__RecordPage">
+            <property name="CompaniesHouseNumber" label="Companies House Number Field API" type="String" description="Insert the API name of the field representing the Companies House Number."/>
+        </targetConfig>
+    </targetConfigs>
 </LightningComponentBundle>

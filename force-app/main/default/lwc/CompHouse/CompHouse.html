@@ -1,11 +1,23 @@
 <template>
     <lightning-tabset variant="scoped">
         <lightning-tab label="Overview">
-            {filing_data}
+            <template if:true={companyName}>
+                {companyName}
+            </template>
+            <template if:true={error}>
+                you have an error {error}
+            </template>
+
+            <template if:true={compHouseValue}>
+                {compHouseValue}
+            </template>
+            <template if:true={getRecordError}>
+                you have an error {getRecordError}
+            </template>
         </lightning-tab>
         <lightning-tab label="Filing History">
             <div style="height: 300px;">
-                <lightning-datatable key-field="id" data={filing_data} columns={columns}>
+                <lightning-datatable data={filing_data} columns={columns}>
                 </lightning-datatable>
             </div>
         </lightning-tab>
