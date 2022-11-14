@@ -1,37 +1,137 @@
 <template>
-    <lightning-tabset variant="scoped">
-        <lightning-tab label="Overview">
-            <template if:true={companyName}>
-                {companyName}
-            </template>
-            <template if:true={error}>
-                you have an error {error}
-            </template>
 
-            <template if:true={compHouseValue}>
-                {compHouseValue}
-            </template>
-            <template if:true={getRecordError}>
-                you have an error {getRecordError}
-            </template>
-        </lightning-tab>
-        <lightning-tab label="Filing History">
-            <div style="height: 300px;">
-                <lightning-datatable data={filing_data} columns={columns}>
-                </lightning-datatable>
+        <article class="slds-card slds-card_boundary">
+        <div class="slds-card__header">
+          <header class="slds-media slds-media_center slds-has-flexi-truncate">
+            <div class="slds-media__figure">
+              <span class="slds-icon_container slds-icon-standard-account" title="account">
+                <svg class="slds-icon slds-icon_small" aria-hidden="true">
+                  <use xlink:href="/assets/icons/standard-sprite/svg/symbols.svg#account"></use>
+                </svg>
+                <span class="slds-assistive-text">Company Information</span>
+              </span>
             </div>
-        </lightning-tab>
-        <lightning-tab label="Offiecrs">
-            Officer Table
-        </lightning-tab>
-        <lightning-tab label="Beneficial Owners">
-            Beneficial Owners Table
-        </lightning-tab>
-        <lightning-tab label="Charges">
-            Charges Table
-        </lightning-tab>
-        <lightning-tab label="Insolvency">
-            Insolvency Table
-        </lightning-tab>
-    </lightning-tabset>
+            <span class="slds-media__body">
+                <h2 class="slds-card__header-title">
+                    <a href="https://find-and-update.company-information.service.gov.uk/company/" title="Click to view Companies House webpage">
+                        <span>{companyName}</span>
+                    </a>
+                    <a title="Company Number">
+                        <lightning-badge label={companyNumber}></lightning-badge>
+                    </a>
+                    <a title="Company Status">
+                        <lightning-badge label={companyStatus} class="slds-theme_success"></lightning-badge>
+                    </a>
+                </h2>
+                <a>
+                    {companyOfficeAddress}
+                </a>
+            </span>
+            <div class="slds-no-flex">
+              <button class="slds-button slds-button_neutral">Sync Customer</button>
+            </div>
+          </header>
+        </div>
+        <div class="slds-card__body slds-card__body_inner">
+            <lightning-tabset if:true={companyName}>
+                <lightning-tab label="Overview">
+                    <div class="slds-grid slds-gutters">
+                        <div class="slds-col">
+                          <span>
+                            <strong>Undeliverable Registered Office Address: </strong> {undeliverableRegOfficeAddress} <br>
+                            <strong>Jurisdiction: </strong> {jurisdiction} <br>
+                            <strong>Company Type: </strong> {companyType} <br>
+                            <strong>Creation: </strong>{dateOfCreation} <br>
+                            <strong>Cessation: </strong>{dateOfCessation} <br>
+                            <strong>Can File: </strong>{canFile} <br>
+                            <strong>Has Been Liquidated: </strong>{hasBeenLiquidated} <br>
+                            <strong>Has Charges: </strong>{hasCharges} <br>
+                            <strong>Has Incolvency History: </strong>{hasInsolvencyHistory} <br>
+                            <strong>Is Community Interest Company: </strong>{isCommunityInterestCompany} <br>
+                            <strong>Nature of Business (SIC): </strong><br>
+                            {sicCodes}
+                          </span>
+                        </div>
+                        <div class="slds-col">
+                          <span>
+                            <strong>Accounts </strong><lightning-badge if:false={accountsOverdue} label="Not Overdue" class="slds-theme_success"></lightning-badge><lightning-badge if:true={accountsOverdue} label="Overdue" class="slds-theme_error"></lightning-badge><br>
+                            <strong>Last Made Up To: </strong>{lasAccountsTo} <br>
+                            <strong>Next Mae Up To: </strong>{nextAccountsTo} <br>
+                            <strong>Next Due: </strong>{nextAccuontsDue} <br>
+                          </span>
+                        </div>
+                        <div class="slds-col">
+                          <span>
+                            <strong>Conformation Statement</strong>
+                                <lightning-badge if:false={statementsOverdue} label="Not Overdue" class="slds-theme_success"></lightning-badge>
+                                <lightning-badge if:true={statementsOverdue} label="Overdue" class="slds-theme_error"></lightning-badge><br>
+                            <strong>Last Made Up To: </strong>{lastStatememtTo} <br>
+                            <strong>Next MAde Up To: </strong>{nextStatementTo} <br>
+                            <strong>Next Due: </strong>{nextStatementDue} <br>
+                          </span>
+                        </div>
+                      </div>
+                    Previous Company Names: <br>
+                    {previousCompanyNames}
+                    Foreign Company Details:
+
+                </lightning-tab>
+
+                <lightning-tab label="Filing History">
+                    <span class="slds-badge">{filingHistoryCount}</span>
+                    <div>
+                        <lightning-datatable 
+                            key-field = "id" 
+                            data={filingHistoryData} 
+                            columns={filingHistoryColumns}
+                            hide-checkbox-column>
+                        </lightning-datatable>
+                    </div>
+                </lightning-tab>
+
+                <lightning-tab label="Offiecrs">
+                    <div>
+                        <lightning-datatable 
+                            key-field = "id" 
+                            data={officerData} 
+                            columns={officerColumns}
+                            hide-checkbox-column>
+                        </lightning-datatable>
+                    </div>
+                </lightning-tab>
+
+                <lightning-tab label="Beneficial Owners">
+                    <lightning-datatable 
+                            key-field = "id" 
+                            data={pscData} 
+                            columns={pscColumns}
+                            hide-checkbox-column>
+                        </lightning-datatable>
+                </lightning-tab>
+
+                <lightning-tab label="UK Establishments">
+                    <lightning-datatable 
+                            key-field = "id" 
+                            data={ukEstablishmentsData} 
+                            columns={ukEstablishmentsColumns}
+                            hide-checkbox-column>
+                        </lightning-datatable>
+                </lightning-tab>
+
+                <lightning-tab label="Charges">
+                    <lightning-datatable 
+                            key-field = "id" 
+                            data={chargesData} 
+                            columns={chargesColumns}
+                            hide-checkbox-column>
+                        </lightning-datatable>
+                </lightning-tab>
+
+                <lightning-tab label="Insolvency">
+                    Insolvency Table
+                </lightning-tab>
+            </lightning-tabset>
+        </div>
+      </article>
+    
 </template>
