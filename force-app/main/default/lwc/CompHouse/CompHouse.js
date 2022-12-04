@@ -1,5 +1,5 @@
 import { LightningElement, api, wire, track } from 'lwc';
-import translations from './translations';
+import translate from './translations';
 import obtainCompanyNumber from '@salesforce/apex/compHouseCallout.obtainCompanyNumber';
 import getCompanyInfo from '@salesforce/apex/compHouseCallout.getCompanyInfo';
 import getFilingHistory from '@salesforce/apex/compHouseCallout.getFilingHistory';
@@ -8,6 +8,8 @@ import getPersonsWithSignificantControlList from '@salesforce/apex/compHouseCall
 import getCompanyUKEstablishments from '@salesforce/apex/compHouseCallout.getCompanyUKEstablishments';
 import getCompanyChargesList from '@salesforce/apex/compHouseCallout.getCompanyChargesList';
 import getCompanyInsolvencyItem from '@salesforce/apex/compHouseCallout.getCompanyInsolvencyItem';
+
+console.log(translate('company_type', 'ltd'));
 
 export default class CompaniesHouse extends LightningElement {
 
@@ -56,9 +58,9 @@ export default class CompaniesHouse extends LightningElement {
       console.log(data);
       this.companyName = JSON.parse(data).companyx5fname;
       this.companyNumber = JSON.parse(data).companyx5fnumber;
-      this.companyStatus = JSON.parse(data).companyx5fstatus;
+      this.companyStatus = translate('company_status', JSON.parse(data).companyx5fstatus);
       this.companyOfficeAddress = JSON.parse(data).registeredx5fofficex5faddress.addressx5flinex5f1 + " " + JSON.parse(data).registeredx5fofficex5faddress.addressx5flinex5f2 + ", " + JSON.parse(data).registeredx5fofficex5faddress.locality + ", " + JSON.parse(data).registeredx5fofficex5faddress.country + ", " + JSON.parse(data).registeredx5fofficex5faddress.postalx5fcode;
-      this.companyType = JSON.parse(data).z0type;
+      this.companyType = translate('company_type', JSON.parse(data).z0type);
       this.dateOfCreation = JSON.parse(data).datex5fofx5fcreation;
       this.dateofCessation = JSON.parse(data).datex5fofx5fcessation;
       this.canFile = JSON.parse(data).canx5ffile;
@@ -66,7 +68,7 @@ export default class CompaniesHouse extends LightningElement {
       this.hasCharges = JSON.parse(data).hasx5fcharges;
       this.hasInsolvencyHistory = JSON.parse(data).hasx5finsolvencyx5fhistory;
       this.isCommunityInterestCompany = JSON.parse(data).isx5fcommunityx5finterestx5fcompany;
-      this.jurisdiction = JSON.parse(data).jurisdiction;
+      this.jurisdiction = translate('jurisdiction', JSON.parse(data).jurisdiction);
       this.registeredOfficeinDispute = JSON.parse(data).registeredx5fofficex5fisx5finx5fdispute;
       this.undeliverableRegOfficeAddress = JSON.parse(data).undeliverablex5fregisteredx5fofficex5faddress;
       this.accountsOverdue = JSON.parse(data).accounts.overdue;

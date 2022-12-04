@@ -1,5 +1,4 @@
 
-
 const translationtable = {
     "identification_type": {
       "non-eea": "Non European Economic Area",
@@ -1572,10 +1571,7 @@ const translationtable = {
       "full-data-available-from-the-company": "Contact the company directly for further information",
       "full-data-available-from-financial-conduct-authority-mutuals-public-register": "Refer to the Financial Conduct Authority Mutuals Public Register for further information about this company"
     }
-  }
-
-  function translate (field, value){
-    return translationtable[field][value];
-  }
-
-  export default translate ()
+  };
+  export default function translate (field, value){
+    return translationtable[field][value]
+  };
