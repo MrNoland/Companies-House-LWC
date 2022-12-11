@@ -1,0 +1,7 @@
+
+.slds-badge {
+    border-radius: var(--slds-c-badge-radius-border, 15rem);
+    font-size: var(--slds-c-badge-font-size, .75rem);
+    size: var(--slds-c-badge-sizing-border, 2px);
+    /* Styles not pertinent have been omitted */
+  }

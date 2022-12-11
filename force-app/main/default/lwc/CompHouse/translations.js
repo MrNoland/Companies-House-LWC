@@ -17,6 +17,22 @@ const translationtable = {
       "england": "England",
       "noneu": "Foreign (Non E.U.)"
     },
+    //Had to create filing_category manually
+    "filing_category": {
+      "accounts" : "Accounts",
+      "address" : "Address",
+      "annual-return" : "Annual Return",
+      "capital" : "capital",
+      "change-of-name" : "Change of Name",
+      "incorporation" : "Incorporation",
+      "liquidation" : "Liquidation",
+      "miscellaneous" : "Miscellaneous",
+      "mortgage" : "Mortgage",
+      "officers" : "Officers",
+      "resolution" : "Resolution",
+      "confirmation-statement" : "Confirmation Statement",
+      "persons-with-significant-control" : "Persons with Significant Control"
+    },
     "company_summary": {
       "other": "Other",
       "private-unlimited": "Private unlimited company",
@@ -1572,6 +1588,7 @@ const translationtable = {
       "full-data-available-from-financial-conduct-authority-mutuals-public-register": "Refer to the Financial Conduct Authority Mutuals Public Register for further information about this company"
     }
   };
+
   export default function translate (field, value){
     return translationtable[field][value]
   };

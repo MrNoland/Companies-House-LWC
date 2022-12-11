@@ -30,11 +30,14 @@ public class compHouseCallout {
     }
 
     @AuraEnabled(cacheable=true)
-    public static String getFilingHistory(String compNumber){
+    public static String getFilingHistory(String compNumber, List<String> categoryFilter, integer itemsPerPage, integer startIndex){
         
         ExternalService.CompaniesHouse service = new ExternalService.CompaniesHouse();
         ExternalService.CompaniesHouse.getFilingHistoryList_Request req = new ExternalService.CompaniesHouse.getFilingHistoryList_Request();
         req.companyx5fnumber = compNumber;
+        req.category = categoryFilter;
+        req.itemsx5fperx5fpage = itemsPerPage;
+        req.startx5findex = startIndex;
         try{
             ExternalService.CompaniesHouse.getFilingHistoryList_Response res = service.getFilingHistoryList(req);
             System.Debug(JSON.serialize(res.Code200));

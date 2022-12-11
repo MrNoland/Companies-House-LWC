@@ -1,5 +1,4 @@
 <template>
-
         <article class="slds-card slds-card_boundary">
         <div class="slds-card__header">
           <header class="slds-media slds-media_center slds-has-flexi-truncate">
@@ -17,14 +16,18 @@
                         <span>{companyName}</span>
                     </a>
                     <a title="Company Number">
+                      <div class="slds-m-around_none"> 
                         <lightning-badge label={companyNumber}></lightning-badge>
+                      </div>
                     </a>
                     <a title="Company Status">
+                      <div class="slds-m-around_none">  
                         <lightning-badge label={companyStatus} class="slds-theme_success"></lightning-badge>
+                      </div>  
                     </a>
                 </h2>
                 <a>
-                    {companyOfficeAddress}
+                    {companyOfficeAddress}<lightning-badge if:true={undeliverableRegOfficeAddress} label="Undeliverable" class="slds-theme_error"></lightning-badge>
                 </a>
             </span>
             <div class="slds-no-flex">
@@ -38,25 +41,21 @@
                     <div class="slds-grid slds-gutters">
                         <div class="slds-col">
                           <span>
-                            <strong>Undeliverable Registered Office Address: </strong> {undeliverableRegOfficeAddress} <br>
                             <strong>Jurisdiction: </strong> {jurisdiction} <br>
                             <strong>Company Type: </strong> {companyType} <br>
                             <strong>Creation: </strong>{dateOfCreation} <br>
                             <strong>Cessation: </strong>{dateOfCessation} <br>
                             <strong>Can File: </strong>{canFile} <br>
-                            <strong>Has Been Liquidated: </strong>{hasBeenLiquidated} <br>
                             <strong>Has Charges: </strong>{hasCharges} <br>
                             <strong>Has Incolvency History: </strong>{hasInsolvencyHistory} <br>
                             <strong>Is Community Interest Company: </strong>{isCommunityInterestCompany} <br>
-                            <strong>Nature of Business (SIC): </strong><br>
-                            {sicCodes}
                           </span>
                         </div>
                         <div class="slds-col">
                           <span>
                             <strong>Accounts </strong><lightning-badge if:false={accountsOverdue} label="Not Overdue" class="slds-theme_success"></lightning-badge><lightning-badge if:true={accountsOverdue} label="Overdue" class="slds-theme_error"></lightning-badge><br>
                             <strong>Last Made Up To: </strong>{lasAccountsTo} <br>
-                            <strong>Next Mae Up To: </strong>{nextAccountsTo} <br>
+                            <strong>Next Made Up To: </strong>{nextAccountsTo} <br>
                             <strong>Next Due: </strong>{nextAccuontsDue} <br>
                           </span>
                         </div>
@@ -66,37 +65,124 @@
                                 <lightning-badge if:false={statementsOverdue} label="Not Overdue" class="slds-theme_success"></lightning-badge>
                                 <lightning-badge if:true={statementsOverdue} label="Overdue" class="slds-theme_error"></lightning-badge><br>
                             <strong>Last Made Up To: </strong>{lastStatememtTo} <br>
-                            <strong>Next MAde Up To: </strong>{nextStatementTo} <br>
+                            <strong>Next Made Up To: </strong>{nextStatementTo} <br>
                             <strong>Next Due: </strong>{nextStatementDue} <br>
                           </span>
                         </div>
                       </div>
-                    Previous Company Names: <br>
-                    {previousCompanyNames}
-                    Foreign Company Details:
+                    <strong>Nature of Business (SIC):</strong> {sicCodes} <br>
+                    <strong>Previous Company Names: </strong> {previousCompanyNames} <br><br>
+                    <strong>Registration Number: </strong> {registrationNumber} <br>
+                    <strong>Parent Registry: </strong> {parentRegistry} <br>
+                    <strong>Incorporated In: </strong> {incorporatedIn} <br>
+                    <strong>Credit Finance Institution: </strong> {creditFinanceInstitution} <br>
+                    <strong>Governed By: </strong> {governedBy} <br>
+                    <strong>Foreign Company Type: </strong> {foreignCompanyType} <br>
+                    <strong>Business Activity: </strong> {businessActivity} <br>
+                    <strong>Must File Within: </strong> {mustFilewithin} <br>
+                    <strong>Account Period To Month: </strong> {accountPeriodToMonth} <br>
+                    <strong>Account Period To Day: </strong> {accountPeriodToDay} <br>
+                    <strong>Account Period From Month: </strong> {accountPeriodFromMonth} <br>
+                    <strong>Account Period From Day: </strong> {accountPeriodFromDay} <br>
+                    <strong>Terms of Account Publication: </strong> {termsOfAccountPublication} <br>
+                    <strong>Foreign Account Type: </strong> {foreignAccountType} <br>
 
                 </lightning-tab>
 
                 <lightning-tab label="Filing History">
-                    <span class="slds-badge">{filingHistoryCount}</span>
-                    <div>
-                        <lightning-datatable 
-                            key-field = "id" 
-                            data={filingHistoryData} 
-                            columns={filingHistoryColumns}
-                            hide-checkbox-column>
-                        </lightning-datatable>
-                    </div>
+                  <lightning-combobox
+                    name="category-filter"
+                    label="Category Filter"
+                    placeholder="Select to filter by document category"
+                    options={categoryFilters}
+                    onchange={handleCategoryFilterChange}>
+                  </lightning-combobox>
+                  <lightning-layout-item padding="verticle-small">
+                    <lightning-combobox
+                      name="items-filter"
+                      label="Number of Items"
+                      options={itemsFilter}
+                      value="15"
+                      onchange={handleItemsFilterChange}>
+                    </lightning-combobox>
+                  </lightning-layout-item>
+                  <div>
+                      <lightning-datatable 
+                          key-field = "id" 
+                          data={filingHistoryData} 
+                          columns={filingHistoryColumns}
+                          column-widths-mode="auto"
+                          hide-checkbox-column>
+                      </lightning-datatable>
+                  </div>
+                  <div class = "nav-buttons">
+                    <template if:false={isFirstPage}>
+                      <lightning-button
+                        variant="neutral"
+                        label="Previous Page"
+                        title="Previous Page"
+                        onclick={handlePrevPage}>
+                      </lightning-button>
+                    </template>
+                    <template if:false={isLastPage}>
+                      <lightning-button
+                        variant="neutral"
+                        label="Next Page"
+                        title="Next Page"
+                        onclick={handleNextPage}>
+                      </lightning-button>
+                    </template>
+                  </div>
+                  <div class = "page-info">
+                    Total Records: {filingHistoryCount} <br>
+                    Page: {pageNumber} of {totalPageCount}
+                  </div>
                 </lightning-tab>
 
                 <lightning-tab label="Offiecrs">
                     <div>
-                        <lightning-datatable 
+                      Active Count: {officerActiveCount} / Resigned Count: {officerResignedCount}
+                      <lightning-input 
+                        type="toggle" 
+                        label="Show Active Only"
+                        message-toggle-active="Active Officers"
+                        message-toggle-inactive="All Officers"
+                        name="Active Officers">
+                      </lightning-input>  
+                      <lightning-datatable 
+                            if:false={showOfficerCard}
                             key-field = "id" 
                             data={officerData} 
                             columns={officerColumns}
+                            column-widths-mode="auto"
+                            onclick={handleOfficerClick}
+                            onrowaction={showOfficerDetails}
                             hide-checkbox-column>
                         </lightning-datatable>
+                        <lightning-card  title={officerName} if:true={showOfficerCard}>
+                          <lightning-button label="Sync Contact" ></lightning-button>
+                          <p class="slds-p-horizontal_small">
+                            {officerResponsibilities} <br>
+                            {officerResignedOn} <br>
+                            {officerPrincipalAddress} <br>
+                            {officerRole} <br>
+                            {officerOccupation} <br>
+                            {officerNationality} <br>
+                            {officerIdentification} <br>
+                            {officerformerNames} <br>
+                            {officerDateOfBirth} <br>
+                            {officerCountryOfResidence} <br>
+                            {officerAppointedOn} <br>
+                            {officerContactDetails} <br>
+                            {officerAddress} <br>
+                          </p>
+                          <lightning-button
+                            variant="neutral"
+                            label="Back"
+                            title="Back"
+                            onclick={backOfficerTable}>
+                          </lightning-button>
+                        </lightning-card>
                     </div>
                 </lightning-tab>
 
