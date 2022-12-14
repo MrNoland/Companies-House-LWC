@@ -40,7 +40,7 @@ public class compHouseCallout {
         req.startx5findex = startIndex;
         try{
             ExternalService.CompaniesHouse.getFilingHistoryList_Response res = service.getFilingHistoryList(req);
-            System.Debug(JSON.serialize(res.Code200));
+            //System.Debug(JSON.serialize(res.Code200));
             return JSON.serialize(res.Code200);
         
         }catch(ExternalService.CompaniesHouse.getFilingHistoryList_ResponseException exc){
@@ -57,10 +57,27 @@ public class compHouseCallout {
         req.companyx5fnumber = compNumber;
         try{
             ExternalService.CompaniesHouse.getCompanyOfficersList_Response res = service.getCompanyOfficersList(req);
-            System.Debug(JSON.serialize(res.Code200));
+            //System.Debug(JSON.serialize(res.Code200));
             return JSON.serialize(res.Code200);
         
         }catch(ExternalService.CompaniesHouse.getCompanyOfficersList_ResponseException exc){
+            System.debug(exc);
+            return 'not good';
+        }
+    }
+
+    @AuraEnabled(cacheable=true)
+    public static String getOfficerAppointments(String officerId){
+        
+        ExternalService.CompaniesHouse service = new ExternalService.CompaniesHouse();
+        ExternalService.CompaniesHouse.getOfficerAppointments_Request req = new ExternalService.CompaniesHouse.getOfficerAppointments_Request();
+        req.officerx5fid = officerId;
+        try{
+            ExternalService.CompaniesHouse.getOfficerAppointments_Response res = service.getOfficerAppointments(req);
+            //System.Debug(JSON.serialize(res.Code200));
+            return JSON.serialize(res.Code200);
+        
+        }catch(ExternalService.CompaniesHouse.getOfficerAppointments_ResponseException exc){
             System.debug(exc);
             return 'not good';
         }
@@ -74,7 +91,7 @@ public class compHouseCallout {
         req.companyx5fnumber = compNumber;
         try{
             ExternalService.CompaniesHouse.getPersonsWithSignificantControlList_Response res = service.getPersonsWithSignificantControlList(req);
-            System.Debug(JSON.serialize(res.Code200));
+            //System.Debug(JSON.serialize(res.Code200));
             return JSON.serialize(res.Code200);
         
         }catch(ExternalService.CompaniesHouse.getPersonsWithSignificantControlList_ResponseException exc){
@@ -91,7 +108,7 @@ public class compHouseCallout {
         req.companyx5fnumber = compNumber;
         try{
             ExternalService.CompaniesHouse.getCompanyUKEstablishments_Response res = service.getCompanyUKEstablishments(req);
-            System.Debug(JSON.serialize(res.Code200));
+           //System.Debug(JSON.serialize(res.Code200));
             return JSON.serialize(res.Code200);
         
         }catch(ExternalService.CompaniesHouse.getCompanyUKEstablishments_ResponseException exc){
@@ -108,7 +125,7 @@ public class compHouseCallout {
         req.companyx5fnumber = compNumber;
         try{
             ExternalService.CompaniesHouse.getCompanyChargesList_Response res = service.getCompanyChargesList(req);
-            System.Debug(JSON.serialize(res.Code200));
+            //System.Debug(JSON.serialize(res.Code200));
             return JSON.serialize(res.Code200);
         
         }catch(ExternalService.CompaniesHouse.getCompanyChargesList_ResponseException exc){
@@ -126,7 +143,7 @@ public class compHouseCallout {
         req.companyx5fnumber = compNumber;
         try{
             ExternalService.CompaniesHouse.getCompanyInsolvencyItem_Response res = service.getCompanyInsolvencyItem(req);
-            System.Debug(JSON.serialize(res.Code200));
+            //System.Debug(JSON.serialize(res.Code200));
             return JSON.serialize(res.Code200);
         
         }catch(ExternalService.CompaniesHouse.getCompanyInsolvencyItem_ResponseException exc){

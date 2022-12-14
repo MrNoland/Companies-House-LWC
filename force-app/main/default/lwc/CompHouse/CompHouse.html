@@ -141,8 +141,11 @@
 
                 <lightning-tab label="Offiecrs">
                     <div>
-                      Active Count: {officerActiveCount} / Resigned Count: {officerResignedCount}
+                      <div if:false={showOfficerCard}>
+                        Active Count: {officerActiveCount} / Resigned Count: {officerResignedCount}
+                      </div>
                       <lightning-input 
+                        if:false={showOfficerCard}  
                         type="toggle" 
                         label="Show Active Only"
                         message-toggle-active="Active Officers"
@@ -155,44 +158,82 @@
                             data={officerData} 
                             columns={officerColumns}
                             column-widths-mode="auto"
-                            onclick={handleOfficerClick}
                             onrowaction={showOfficerDetails}
                             hide-checkbox-column>
                         </lightning-datatable>
-                        <lightning-card  title={officerName} if:true={showOfficerCard}>
-                          <lightning-button label="Sync Contact" ></lightning-button>
-                          <p class="slds-p-horizontal_small">
-                            {officerResponsibilities} <br>
-                            {officerResignedOn} <br>
-                            {officerPrincipalAddress} <br>
-                            {officerRole} <br>
-                            {officerOccupation} <br>
-                            {officerNationality} <br>
-                            {officerIdentification} <br>
-                            {officerformerNames} <br>
-                            {officerDateOfBirth} <br>
-                            {officerCountryOfResidence} <br>
-                            {officerAppointedOn} <br>
-                            {officerContactDetails} <br>
-                            {officerAddress} <br>
-                          </p>
-                          <lightning-button
+                        <lightning-button
+                            if:true={showOfficerCard}    
                             variant="neutral"
                             label="Back"
                             title="Back"
+                            icon-name="utility:back"
+                            icon-position="left"
                             onclick={backOfficerTable}>
                           </lightning-button>
+                        <lightning-card  title={officerName} if:true={showOfficerCard}>
+                          <lightning-button 
+                            label="Sync Contact">
+                          </lightning-button>
+                          <p class="slds-p-horizontal_small">
+                            <strong>Responsibilities: </strong>{officerResponsibilities} <br>
+                            <strong>Resigned On: </strong>{officerResignedOn} <br>
+                            <strong>Principal Address: </strong>{officerPrincipalAddress} <br>
+                            <strong>Role: </strong>{officerRole} <br>
+                            <strong>Occupation: </strong>{officerOccupation} <br>
+                            <strong>Nationality: </strong>{officerNationality} <br>
+                            <strong>Identification: </strong>{officerIdentification} <br>
+                            <strong>Former Names: </strong>{officerformerNames} <br>
+                            <strong>Date of Birth: </strong>{officerDateOfBirth} <br>
+                            <strong>Country of Residence: </strong>{officerCountryOfResidence} <br>
+                            <strong>Appointed On: </strong>{officerAppointedOn} <br>
+                            <strong>Contact Details: </strong>{officerContactDetails} <br>
+                            <strong>Address: </strong>{officerAddress} <br>
+                          </p>
+                          <lightning-datatable 
+                            if:true={showOfficerCard}
+                            key-field = "id" 
+                            data={officerAppointmentsData} 
+                            columns={officerAppointmentsColumns}
+                            column-widths-mode="auto"
+                            hide-checkbox-column>
+                          </lightning-datatable>
+                          
                         </lightning-card>
                     </div>
                 </lightning-tab>
 
                 <lightning-tab label="Beneficial Owners">
                     <lightning-datatable 
-                            key-field = "id" 
-                            data={pscData} 
-                            columns={pscColumns}
-                            hide-checkbox-column>
-                        </lightning-datatable>
+                      key-field = "id" 
+                      data={pscData} 
+                      columns={pscColumns}
+                      hide-checkbox-column>
+                    </lightning-datatable>
+                    <template for:each={pscData} for:item="psc">
+                      <lightning-card 
+                        title={psc.name} 
+                        key={psc.name}>
+                        <p class="slds-p-horizontal_small">
+                          <strong> Principal Office Address: </strong>
+                          <strong> Notified On: </strong> {psc.notifiedx5fon} <br>
+                          <strong> Nature of Control: </strong> {psc.naturesx5fofx5fcontrol} <br>
+                          <strong> Nationality: </strong> {psc.principalx5fofficex5faddress} <br>
+                          <strong> Kind: </strong> {psc.kind} <br>
+                          <strong> Nationality: </strong> {psc.nationality} <br>
+                          <strong> Is Sanctioned: </strong> {psc.isx5fsanctioned} <br>
+                          <strong> Registration Number: </strong> {psc.identification.registrationx5fnumber} <br>
+                          <strong> Place Registered: </strong> {psc.identification.placex5fregistered} <br>
+                          <strong> Legal Form: </strong> {psc.identification.legalx5fform} <br>
+                          <strong> Legal Authority: {psc.identification.legalx5fauthority} </strong> <br>
+                          <strong> Country Registered: {psc.identification.countryx5fregistered} </strong> <br>
+                          <strong> Description: </strong> {psc.description} <br>
+                          <strong> Date of Birth: </strong> {psc.datex5fofx5fbirth} <br>
+                          <strong> Country of Residence: </strong> {psc.countryx5fofx5fresidence} <br>
+                          <strong> Ceased On: </strong> {psc.ceasedx5fon} <br>
+                          <strong> Address: </strong> {psc.address} <br>
+                        </p>
+                      </lightning-card>
+                  </template>
                 </lightning-tab>
 
                 <lightning-tab label="UK Establishments">

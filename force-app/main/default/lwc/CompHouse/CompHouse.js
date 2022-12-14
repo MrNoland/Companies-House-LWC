@@ -4,6 +4,7 @@ import obtainCompanyNumber from '@salesforce/apex/compHouseCallout.obtainCompany
 import getCompanyInfo from '@salesforce/apex/compHouseCallout.getCompanyInfo';
 import getFilingHistory from '@salesforce/apex/compHouseCallout.getFilingHistory';
 import getCompanyOfficersList from '@salesforce/apex/compHouseCallout.getCompanyOfficersList';
+import getOfficerAppointments from '@salesforce/apex/compHouseCallout.getOfficerAppointments';
 import getPersonsWithSignificantControlList from '@salesforce/apex/compHouseCallout.getPersonsWithSignificantControlList';
 import getCompanyUKEstablishments from '@salesforce/apex/compHouseCallout.getCompanyUKEstablishments';
 import getCompanyChargesList from '@salesforce/apex/compHouseCallout.getCompanyChargesList';
@@ -278,8 +279,10 @@ export default class CompaniesHouse extends LightningElement {
   @api officerContactDetails;
   @api officerAppointedOn;
   @api officerAddress;
+  @api officerId;
+
   showOfficerDetails(event){
-    console.log(JSON.stringify(event.detail.row));
+    //console.log(JSON.stringify(event.detail.row));
     this.showOfficerCard = true;
     this.officerName = event.detail.row.name;
     this.officerResponsibilities = event.detail.row.responsibilities;
@@ -290,17 +293,24 @@ export default class CompaniesHouse extends LightningElement {
     this.officerNationality = event.detail.row.nationality;
     this.officerIdentification = event.detail.row.identification;
     this.officerformerNames = event.detail.row.formerx5fnames;
-    this.officerDateOfBirth = event.detail.row.datex5fofx5fbirth;
+    if (event.detail.row.datex5fofx5fbirth !== null ) {
+      if (event.detail.row.datex5fofx5fbirth.day == null) {
+        this.officerDateOfBirth = translate("month" , event.detail.row.datex5fofx5fbirth.month) + " " + String(event.detail.row.datex5fofx5fbirth.year);
+      } else {
+        this.officerDateOfBirth = translate("month" , event.detail.row.datex5fofx5fbirth.month) + " " + String(event.detail.row.datex5fofx5fbirth.day) + " " + String(event.detail.row.datex5fofx5fbirth.year);
+      }
+    };
     this.officerCountryOfResidence = event.detail.row.countryx5fofx5fresidence;
     this.officerContactDetails = event.detail.row.contactx5fdetails;
     this.officerAppointedOn = event.detail.row.appointedx5fon;
-    this.officerAddress = event.detail.row.address.region + event.detail.row.address.addressx5flinex5f1 + event.detail.row.address.addressx5flinex5f1 + event.detail.row.address.premises + event.detail.row.address.pox5fbox + event.detail.row.address.postalx5fcode + event.detail.row.address.locality + event.detail.row.address.country + event.detail.row.address.carex5fof;
+    this.officerAddress = event.detail.row.address.region + event.detail.row.address.addressx5flinex5f1 + event.detail.row.address.addressx5flinex5f2 + event.detail.row.address.pox5fbox + event.detail.row.address.postalx5fcode + event.detail.row.address.locality + event.detail.row.address.country + event.detail.row.address.carex5fof;
+    this.officerId = event.detail.row.links.officer.appointments.slice( 10, 37);
   };
 
   backOfficerTable(event){
     this.showOfficerCard = false;
   }
-
+  
   toggleOfficers(event){
     this.officerFilter = true;
   };
@@ -309,6 +319,7 @@ export default class CompaniesHouse extends LightningElement {
   wiredOfficerList({error, data}) {
     if (data) {
       this.officerData = JSON.parse(data).items;
+      console.log(this.officerData);
       this.officerResignedCount = JSON.parse(data).totalx5fresults;
       this.officerActiveCount = JSON.parse(data).totalx5fresults - JSON.parse(data).resignedx5fcount;
       this.officerResignedCount = JSON.parse(data).resignedx5fcount; 
@@ -317,16 +328,47 @@ export default class CompaniesHouse extends LightningElement {
         obj.officerx5frole = translate('officer_role', obj.officerx5frole);
         obj.nameURL = "https://find-and-update.company-information.service.gov.uk/" + obj.links.officer.appointments;
       };
-      
-      /*if (this.officerFilter = true){
-        officerdata = officerData.filter(officerData => officerData.resignedx5fon === '');
-      }
-      console.log(this.officerData);
-      console.log(data);*/
     } else if (error) {
       this.testError = "Officer List Error!";
     }
   }
+    //callout to getOfficerAppointments to obtain data
+    @api officerAppointmentsColumns = [
+      { label: 'Company Name', fieldName: 'companyURL', type: 'url',
+        cellAttributes: {
+          iconName: 'utility:new_window',
+          iconPosition: 'right',
+        },  
+        typeAttributes: {
+            label: {
+              fieldName: 'companyName'
+            },
+            tooltip: "View in Companies House website",
+          }
+        },
+      { label: 'Company Status', fieldName: 'companyStatus' },
+      { label: 'Role', fieldName: 'officerx5frole'},
+      { label: 'Appointed On', fieldName: 'appointedx5fon'},
+      { label: 'Resigned On', fieldName: 'resignedx5fon'},
+    ];
+    @api officerAppointmentsData = [];
+
+    @wire(getOfficerAppointments, {officerId: '$officerId'})
+    wiredofficerAppointments({error, data}) {
+      if (data) {
+        //console.log(data);
+        this.officerAppointmentsData = JSON.parse(data).items;
+        for (const obj of this.officerAppointmentsData) {
+          obj.officerx5frole = translate('officer_role', obj.officerx5frole);
+          obj.companyName = obj.appointedx5fto.companyx5fname;
+          obj.companyStatus = translate('company_status', obj.appointedx5fto.companyx5fstatus);
+          obj.companyURL = 'https://find-and-update.company-information.service.gov.uk' + obj.links.company;
+        };
+        //console.log(officerAppointmentsData)
+      } else if (error) {
+        this.testError = "Officer Appoints Error!";
+      }
+    }
 
   //callout to getPersonsWithSignificantControlList to obtain data
   //Will likely need another callout to get Person details
@@ -345,11 +387,14 @@ export default class CompaniesHouse extends LightningElement {
     { label: 'Country of Residence', fieldName: 'countryx5fofx5fresidence'},
     { label: 'Nature of Control', fieldName: 'naturesx5fofx5fcontrol'},
   ];
+  
+  
   @api pscData = [];
+  @api pscName;
   @wire(getPersonsWithSignificantControlList, {compNumber: '$cNum'})
   wiredPscList({error, data}) {
     if (data) {
-      //console.log(data);
+      console.log(data);
       this.pscData = JSON.parse(data).items;
     } else if (error) {
       this.testError = "PSC List error!";

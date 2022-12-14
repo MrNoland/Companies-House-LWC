@@ -33,6 +33,21 @@ const translationtable = {
       "confirmation-statement" : "Confirmation Statement",
       "persons-with-significant-control" : "Persons with Significant Control"
     },
+    //Created this manually as well
+    "month":{
+      1 : "January",
+      2 : "Febuary",
+      3 : "March",
+      4 : "April",
+      5 : "May",
+      6 : "June",
+      7 : "July",
+      8 : "August",
+      9 : "September",
+      10 : "October",
+      11 : "November",
+      12 : "December"
+    },
     "company_summary": {
       "other": "Other",
       "private-unlimited": "Private unlimited company",
