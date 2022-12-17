@@ -202,36 +202,34 @@
                     </div>
                 </lightning-tab>
 
-                <lightning-tab label="Beneficial Owners">
-                    <lightning-datatable 
-                      key-field = "id" 
-                      data={pscData} 
-                      columns={pscColumns}
-                      hide-checkbox-column>
-                    </lightning-datatable>
+                <lightning-tab label="Persons with Significant Control">
                     <template for:each={pscData} for:item="psc">
                       <lightning-card 
                         title={psc.name} 
                         key={psc.name}>
-                        <p class="slds-p-horizontal_small">
-                          <strong> Principal Office Address: </strong>
+                        <div class="slds-p-horizontal_small">
+                          <strong> Principal Office Address: {psc.principalx5fofficex5faddress} </strong> <br>
                           <strong> Notified On: </strong> {psc.notifiedx5fon} <br>
                           <strong> Nature of Control: </strong> {psc.naturesx5fofx5fcontrol} <br>
-                          <strong> Nationality: </strong> {psc.principalx5fofficex5faddress} <br>
-                          <strong> Kind: </strong> {psc.kind} <br>
                           <strong> Nationality: </strong> {psc.nationality} <br>
+                          <strong> PSC Kind: </strong> {psc.kind} <br>
                           <strong> Is Sanctioned: </strong> {psc.isx5fsanctioned} <br>
+                        </div>
+
+                        <div if:true={psc.identification} class="slds-p-horizontal_small">
                           <strong> Registration Number: </strong> {psc.identification.registrationx5fnumber} <br>
                           <strong> Place Registered: </strong> {psc.identification.placex5fregistered} <br>
                           <strong> Legal Form: </strong> {psc.identification.legalx5fform} <br>
                           <strong> Legal Authority: {psc.identification.legalx5fauthority} </strong> <br>
                           <strong> Country Registered: {psc.identification.countryx5fregistered} </strong> <br>
+                        </div>
+                        <div class="slds-p-horizontal_small">
                           <strong> Description: </strong> {psc.description} <br>
-                          <strong> Date of Birth: </strong> {psc.datex5fofx5fbirth} <br>
+                          <strong> Date of Birth: </strong> {psc.pscDateofBirth} <br>
                           <strong> Country of Residence: </strong> {psc.countryx5fofx5fresidence} <br>
                           <strong> Ceased On: </strong> {psc.ceasedx5fon} <br>
                           <strong> Address: </strong> {psc.address} <br>
-                        </p>
+                        </div>
                       </lightning-card>
                   </template>
                 </lightning-tab>
@@ -246,14 +244,67 @@
                 </lightning-tab>
 
                 <lightning-tab label="Charges">
-                    <lightning-datatable 
-                            key-field = "id" 
-                            data={chargesData} 
-                            columns={chargesColumns}
-                            hide-checkbox-column>
-                        </lightning-datatable>
+                  <div if:false={showChargeCard}>
+                    Total Charges: {totalCharges}  <br>
+                    {satisfiedCharges} Satisfied / {partiallySatisfiedCharges} Partially Satisfied
+                  </div>
+                  <lightning-input   
+                    type="toggle" 
+                    label="Outstanding/Partially Satisfied"
+                    message-toggle-active="Outstanding Only"
+                    message-toggle-inactive="All Charges"
+                    if:false={showChargeCard}
+                    name="Charges">
+                  </lightning-input>
+                  <lightning-datatable 
+                    key-field = "id"
+                    data={chargesData} 
+                    columns={chargesColumns}
+                    column-widths-mode="auto"
+                    onrowaction={showChargeDetails}
+                    if:false={showChargeCard}
+                    hide-checkbox-column>
+                  </lightning-datatable>
+                  <lightning-button
+                    if:true={showChargeCard}
+                    variant="neutral"
+                    label="Back"
+                    title="Back"
+                    icon-name="utility:back"
+                    icon-position="left"
+                    onclick={backChargeTable}>
+                  </lightning-button>
+                  <lightning-card  title={chargeClassificationDescription} if:true={showChargeCard}>
+                    <lightning-button 
+                      label="Sync Charge">
+                    </lightning-button>
+                      <div class="slds-p-horizontal_small">
+                        <strong>Acquired On: </strong> {chargeAcquiredOn} <br>
+                        <strong>Charge Code: </strong> {chargeCode} <br>
+                        <strong>Charge Status: </strong> {chargeStatus} <br>
+                        <strong>Charge Delivered On: </strong> {chargeDeliveredOn} <br>
+                        <strong>Charge Created On: </strong> {chargeCreatedOn} <br>
+                        <strong>Insolvency Cases: </strong> {chargeInsolvencyCases} <br>
+                        <strong>Type: </strong> {chargeParticularsType} <br>
+                        <strong>Description: </strong> {chargeParticularsDescription} <br>
+                        <strong>Floating: </strong> {chargeParticularsFloating} <br>
+                        <strong>Fixed: </strong> {chargeParticularsFixed} <br>
+                        <strong>Resolved On: </strong> {chargeResolvedOn} <br>
+                        <strong>Satisfied On: </strong> {chargeSatisfiedOn} <br>
+                        <strong>Scottish Alterations: </strong> {chargeScottinhAlterations} <br>
+                        <strong>Secured Type: </strong> {chargeSecuredtype} <br>
+                        <strong>Secured Description: </strong> {chargeSecuredDescription} <br>
+                      </div>
+                      <lightning-datatable 
+                        key-field = "id"
+                        data={transactionsData} 
+                        columns={transactionsColumns}
+                        column-widths-mode="auto"
+                        if:true={showChargeCard}
+                        hide-checkbox-column>
+                      </lightning-datatable>
+                  </lightning-card>
                 </lightning-tab>
-
                 <lightning-tab label="Insolvency">
                     Insolvency Table
                 </lightning-tab>

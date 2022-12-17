@@ -9,6 +9,7 @@ import getPersonsWithSignificantControlList from '@salesforce/apex/compHouseCall
 import getCompanyUKEstablishments from '@salesforce/apex/compHouseCallout.getCompanyUKEstablishments';
 import getCompanyChargesList from '@salesforce/apex/compHouseCallout.getCompanyChargesList';
 import getCompanyInsolvencyItem from '@salesforce/apex/compHouseCallout.getCompanyInsolvencyItem';
+import TickerSymbol from '@salesforce/schema/Account.TickerSymbol';
 
 export default class CompaniesHouse extends LightningElement {
 
@@ -299,6 +300,8 @@ export default class CompaniesHouse extends LightningElement {
       } else {
         this.officerDateOfBirth = translate("month" , event.detail.row.datex5fofx5fbirth.month) + " " + String(event.detail.row.datex5fofx5fbirth.day) + " " + String(event.detail.row.datex5fofx5fbirth.year);
       }
+    } else {
+      this.officerDateOfBirth = null;
     };
     this.officerCountryOfResidence = event.detail.row.countryx5fofx5fresidence;
     this.officerContactDetails = event.detail.row.contactx5fdetails;
@@ -319,11 +322,11 @@ export default class CompaniesHouse extends LightningElement {
   wiredOfficerList({error, data}) {
     if (data) {
       this.officerData = JSON.parse(data).items;
-      console.log(this.officerData);
+      //console.log(this.officerData);
       this.officerResignedCount = JSON.parse(data).totalx5fresults;
       this.officerActiveCount = JSON.parse(data).totalx5fresults - JSON.parse(data).resignedx5fcount;
       this.officerResignedCount = JSON.parse(data).resignedx5fcount; 
-      console.log(this.officerData);
+      //console.log(this.officerData);
       for (const obj of this.officerData) {
         obj.officerx5frole = translate('officer_role', obj.officerx5frole);
         obj.nameURL = "https://find-and-update.company-information.service.gov.uk/" + obj.links.officer.appointments;
@@ -364,38 +367,33 @@ export default class CompaniesHouse extends LightningElement {
           obj.companyStatus = translate('company_status', obj.appointedx5fto.companyx5fstatus);
           obj.companyURL = 'https://find-and-update.company-information.service.gov.uk' + obj.links.company;
         };
-        //console.log(officerAppointmentsData)
+        //console.log(JSON.stringify(officerAppointmentsData));
       } else if (error) {
         this.testError = "Officer Appoints Error!";
       }
     }
 
   //callout to getPersonsWithSignificantControlList to obtain data
-  //Will likely need another callout to get Person details
-  //Needs significant work to clean up object
-  @api pscColumns = [
-    { label: 'Name', fieldName: 'name' },
-    { label: 'Correspondence Address', fieldName: 'address'}, //this field needs fixing in service
-    { label: 'Notified On', fieldName: 'notifiedx5fon'},
-    { label: 'Governing Law', fieldName: 'legalx5fauthority'},
-    { label: 'Legal Form', fieldName: 'legalx5fform'},
-    { label: 'Place Registered', fieldName: 'placex5fregistered'},
-    { label: 'Registration Number', fieldName: 'registrationx5fnumber'},
-    { label: 'Incorporated In', fieldName: 'countryx5fregistered'},
-    { label: 'Date of Birth', fieldName: 'datex5fofx5fbirth'},
-    { label: 'Ceased Date', fieldName: 'ceasedx5fon'},
-    { label: 'Country of Residence', fieldName: 'countryx5fofx5fresidence'},
-    { label: 'Nature of Control', fieldName: 'naturesx5fofx5fcontrol'},
-  ];
-  
-  
   @api pscData = [];
+  @api pscDateofBirth;
   @api pscName;
+  @api pscKind
   @wire(getPersonsWithSignificantControlList, {compNumber: '$cNum'})
   wiredPscList({error, data}) {
     if (data) {
-      console.log(data);
+      //console.log(data);
       this.pscData = JSON.parse(data).items;
+      for (const obj of this.pscData) {
+        obj.kind = translate('pscKind', obj.kind);
+        if (obj.datex5fofx5fbirth !== null ) {
+          if (obj.datex5fofx5fbirth.day == null) {
+            obj.pscDateofBirth = translate("month" , obj.datex5fofx5fbirth.month) + " " + String(obj.datex5fofx5fbirth.year);
+          } else {
+            obj.pscDateofBirth = translate("month" , obj.datex5fofx5fbirth.month) + " " + String(obj.datex5fofx5fbirth.day) + " " + String(obj.datex5fofx5fbirth.year);
+          }
+        };
+      }
+      //console.log(JSON.stringify(pscdata));
     } else if (error) {
       this.testError = "PSC List error!";
     }
@@ -403,10 +401,21 @@ export default class CompaniesHouse extends LightningElement {
 
   //callout to getCompanyUKEstablishments to obtain data
   @api ukEstablishmentsColumns = [
-    { label: 'Company Name', fieldName: 'companyx5fname' },
+    { label: 'Company Name', fieldName: 'companyURL', type: 'url',
+        cellAttributes: {
+          iconName: 'utility:new_window',
+          iconPosition: 'right',
+        },  
+        typeAttributes: {
+            label: {
+              fieldName: 'companyName'
+            },
+            tooltip: "View in Companies House website",
+          }
+        },
     { label: 'Company Number', fieldName: 'companyx5fnumber'},
-    { label: 'Locality', fieldName: 'locality'},
     { label: 'Company Status', fieldName: 'companyx5fstatus'},
+    { label: 'Locality', fieldName: 'locality'},
   ];
   @api ukEstablishmentsData = [];
   @wire(getCompanyUKEstablishments, {compNumber: '$cNum'})
@@ -414,29 +423,125 @@ export default class CompaniesHouse extends LightningElement {
     if (data) {
       //console.log(data);
       this.ukEstablishmentsData = JSON.parse(data).items;
+      for (const obj of this.ukEstablishmentsData) {
+        obj.companyx5fstatus = translate('company_status', obj.companyx5fstatus);
+        obj.companyName = obj.companyx5fname;
+        obj.companyURL = 'https://find-and-update.company-information.service.gov.uk' + obj.links.company;
+      };
     } else if (error) {
       this.testError = "UK Establishments Error!";
     }
   }
 
   //callout to getCompanyChargesList to obtain data
-  //Will likely need abother callout to ger charge details
   @api chargesColumns = [
-    { label: 'Description', fieldName: 'description' },//need to pull from inside Classification object
-    { label: 'Created', fieldName: 'createdx5fon'},
+    {label: 'Details', fieldName: 'details', type: 'button', typeAttributes: { label: 'Details'}},
+    { label: 'Description', fieldName: 'description' },
     { label: 'Delivered', fieldName: 'deliveredx5fon'},
     { label: 'Status', fieldName: 'status'},
-    { label: 'Transaction Filed', fieldName: 'companyx5fstatus'},
-    { label: 'Persons Entitled', fieldName: 'personsx5fentitled'},//Array of objects needs to be broken apart
-    { label: 'Amount Secured', fieldName: 'securedx5fdetails'}, // Object needs to be broken apart
-    { label: 'Particulars', fieldName: 'personsx5fentitled'}, //Object needs to be broken apart
+    { label: 'Persons Entitled', fieldName: 'personsEntitled'},//Only showing first value, need to figure out how to show all
+    { label: 'Description', fieldName: 'particularsDescription', wrapText: true},
   ];
   @api chargesData = [];
+
+  @api transactionsColumns = [
+    {label: 'Type', fieldName: 'filingType'},
+    {label: 'Delivered', fieldName: 'deliveredx5fon' },
+    { label: 'Filings', fieldName: 'filingURL', type: 'url',
+        cellAttributes: {
+          iconName: 'utility:new_window',
+          iconPosition: 'right',
+        },  
+        typeAttributes: {
+            label: "View/Download",
+            tooltip: "View in Companies House website",
+          }
+        },
+  ];
+  @api transactionsData = [];
+
+  @api showChargeCard;
+  @api chargeAcquiredOn;
+  @api chargeCode;
+  @api chargeClassificationDescription;
+  @api chargeClassificationType;
+  @api chargeStatus;
+  @api chargeDeliveredOn;
+  @api chargeCreatedOn;
+  @api chargeInsolvencyCases;
+  @api chargeParticularsType;
+  @api chargeParticularsDescription;
+  @api chargeParticularsFloating;
+  @api chargeParticularsFixed;
+  @api chargeResolvedOn;
+  @api chargeSatisfiedOn;
+  @api chargeSecuredtype;
+  @api chargeSecuredDescription;
+  @api chargePersonsEntitled = [];
+  @api chargeScottinhAlterations;
+  @api chargeTransactions = [];
+
+  showChargeDetails(event){
+    console.log(JSON.stringify(event.detail.row));
+    this.showChargeCard = true;
+    this.chargeAcquiredOn = event.detail.row.acquiredx5fon;
+    this.chargeCode = event.detail.row.chargex5fcode;
+    this.chargeClassificationDescription = event.detail.row.classification.description;
+    this.chargeClassificationType = event.detail.row.classification.z0type;
+    this.chargeStatus = event.detail.row.status
+    this.chargeDeliveredOn = event.detail.row.deliveredx5fon;
+    this.chargeCreatedOn = event.detail.row.createdx5fon;
+    this.chargeInsolvencyCases = event.detail.row.insolvencyx5fcases;
+    this.chargeParticularsType = translate('particular-description', event.detail.row.particulars.z0type);
+    this.chargeParticularsDescription = event.detail.row.particulars.description;
+    this.chargeParticularsFloating = event.detail.row.particulars.containsx5ffloatingx5fcharge;
+    this.chargeParticularsFixed = event.detail.row.particulars.containsx5ffixedx5fcharge;
+    this.chargeResolvedOn = event.detail.row.resolvedx5fon;
+    this.chargeSatisfiedOn = event.detail.row.satisfiedx5fon;
+    if (event.detail.row.securedx5fdetails !== null){
+      this.chargeSecuredtype = translate('secured-details-description' , event.detail.row.securedx5fdetails.z0type);
+      this.chargeSecuredDescription = event.detail.row.securedx5fdetails.description;
+    } else {
+      this.chargeSecuredtype = null;
+      this.chargeSecuredDescription = null;
+    };
+    //console.log(JSON.stringify(event.detail.row.securedx5fdetails));
+    //this.chargePersonsEntitled
+    this.chargeScottinhAlterations = event.detail.row.scottishx5falterations;
+    console.log(JSON.stringify(event.detail.row.transactions));
+    this.transactionsData = event.detail.row.transactions;
+    for (const obj of this.transactionsData){
+      obj.filingURL = "https://beta.companieshouse.gov.uk" + obj.links.filing + "/document?format=pdf&download=0";
+      obj.filingType = translate('filing_type', obj.filingx5ftype)
+    }
+    console.log(JSON.stringify(event.detail.row.transactions))
+  }
+
+  backChargeTable(event){
+    this.showChargeCard = false;
+  }
+
+  @api totalCharges;
+  @api satisfiedCharges;
+  @api partiallySatisfiedCharges;
   @wire(getCompanyChargesList, {compNumber: '$cNum'})
   wiredCompanyCharges({error, data}) {
     if (data) {
-      //console.log(data);
+      console.log(data);
+      this.totalCharges = JSON.parse(data).unfilteredx5fcount;
+      this.satisfiedCharges = JSON.parse(data).satisfiedx5fcount;
+      this.partiallySatisfiedCharges = JSON.parse(data).partx5fsatisfiedx5fcount;
       this.chargesData = JSON.parse(data).items;
+      for (const obj of this.chargesData) {
+        obj.description = obj.classification.description;
+        if (obj.satisfiedx5fon !== null){
+          obj.status = translate('status', obj.status) + " " + obj.satisfiedx5fon;
+        } else {
+          obj.status = translate('status', obj.status);
+        };
+        obj.personsEntitled = obj.personsx5fentitled[0].name;
+        obj.particularsDescription = obj.particulars.description;
+      };
     } else if (error) {
       this.testError = "Company Charges Error!";
     }
