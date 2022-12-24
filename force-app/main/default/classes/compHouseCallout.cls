@@ -50,11 +50,13 @@ public class compHouseCallout {
     }
 
     @AuraEnabled(cacheable=true)
-    public static String getCompanyOfficersList(String compNumber){
+    public static String getCompanyOfficersList(String compNumber, integer itemsPerPage, integer startIndex){
         
         ExternalService.CompaniesHouse service = new ExternalService.CompaniesHouse();
         ExternalService.CompaniesHouse.getCompanyOfficersList_Request req = new ExternalService.CompaniesHouse.getCompanyOfficersList_Request();
         req.companyx5fnumber = compNumber;
+        req.itemsx5fperx5fpage = itemsPerPage;
+        req.startx5findex = startIndex;
         try{
             ExternalService.CompaniesHouse.getCompanyOfficersList_Response res = service.getCompanyOfficersList(req);
             //System.Debug(JSON.serialize(res.Code200));
@@ -134,19 +136,18 @@ public class compHouseCallout {
         }
     }
 
-    //Something is wrong with this Apex method
     @AuraEnabled(cacheable=true)
-    public static String getCompanyInsolvencyItem(String compNumber){
+    public static String getCompanyInsolvency(String compNumber){
         
         ExternalService.CompaniesHouse service = new ExternalService.CompaniesHouse();
-        ExternalService.CompaniesHouse.getCompanyInsolvencyItem_Request req = new ExternalService.CompaniesHouse.getCompanyInsolvencyItem_Request();
+        ExternalService.CompaniesHouse.getCompanyInsolvency_Request req = new ExternalService.CompaniesHouse.getCompanyInsolvency_Request();
         req.companyx5fnumber = compNumber;
         try{
-            ExternalService.CompaniesHouse.getCompanyInsolvencyItem_Response res = service.getCompanyInsolvencyItem(req);
-            //System.Debug(JSON.serialize(res.Code200));
+            ExternalService.CompaniesHouse.getCompanyInsolvency_Response res = service.getCompanyInsolvency(req);
+            System.Debug(JSON.serialize(res.Code200));
             return JSON.serialize(res.Code200);
         
-        }catch(ExternalService.CompaniesHouse.getCompanyInsolvencyItem_ResponseException exc){
+        }catch(ExternalService.CompaniesHouse.getCompanyInsolvency_ResponseException exc){
             System.debug(exc);
             return 'not good';
         }

@@ -1,7 +1,17 @@
 
 .slds-badge {
-    border-radius: var(--slds-c-badge-radius-border, 15rem);
-    font-size: var(--slds-c-badge-font-size, .75rem);
-    size: var(--slds-c-badge-sizing-border, 2px);
-    /* Styles not pertinent have been omitted */
+    font-size: var(--slds-c-badge-font-size, .70rem);
   }
+
+.customIcon{
+  width: 35px;
+  height: 35px;
+  margin: 6px;
+  border-radius: 6px;
+}
+
+.spacingCard {
+  --sds-c-card-header-spacing-block-end: 0;
+  --sds-c-card-body-spacing-block-start: 0;
+  --sds-c-card-body-spacing-block-end: 0;
+}
