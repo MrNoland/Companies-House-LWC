@@ -1,169 +1,206 @@
 <template>
-  <article class="slds-card slds-card_boundary spacingCard">
-    <div class="slds-card__header">
-      <header class="slds-media slds-media_center">
-        <img src={CH_Icon} alt="Companies House Logo" class="customIcon">
-          <span class="slds-media__body">
-            <h3 class="slds-card__header-title">
-              <a href={companyURL} title="Click to view Companies House webpage" target="_blank">
-                <span>{companyName}</span>
-              </a>
-              <lightning-badge label={companyNumber} title="Company Number"></lightning-badge>
-              <lightning-badge label={companyStatus} class={statusBadgeTheme} title="Company Status"></lightning-badge>
-              <lightning-badge label={jurisdiction} title="Jurisdiction"></lightning-badge> <br>
-            </h3>
-            {companyOfficeAddress}<lightning-badge if:true={undeliverableRegOfficeAddress} label="Undeliverable" class="slds-theme_error"></lightning-badge>
-          </span>
-          <div class="slds-no-flex">
-            <button class="slds-button slds-button_neutral slds-float_right">Sync Customer</button>
-          </div> 
-      </header>
-    </div>
+  
+  <div if:false={successCHNumber}>
+    <article class="slds-card slds-card_boundary">
+      <div class="slds-card__header">
+        <header class="slds-media slds-media_center">
+          <img src={CH_Icon} alt="Companies House Logo" class="customIcon">
+            <span class="slds-media__body">
 
-    <div class="slds-card__body slds-card__body_inner">
-        <lightning-tabset if:true={companyName}>
-            <lightning-tab label="Overview">
-
-              <div class="c-container">
-                <lightning-layout multiple-rows="true">
-                  <lightning-layout-item size="12">
-                    
-                    <lightning-layout>
-                      <lightning-layout-item size="4">
-                        <div class="slds-text-heading_small"><strong>Details</strong></div>
-                        <strong>Company Type: </strong> {companyType} <br>
-                        <div if:true={dateOfCreation}>
-                          <div if:false={foreignCompany}>
-                            <strong>Incorporated On: </strong><lightning-formatted-date-time value={dateOfCreation} time-zone="GMT"></lightning-formatted-date-time><br>
-                          </div>
-                          <div if:true={foreignCompany}>
-                            <strong>First UK Establishment Opened: </strong><lightning-formatted-date-time value={dateOfCreation} time-zone="GMT"></lightning-formatted-date-time><br>
-                          </div>
-                        </div>
-                        <div if:true={dateOfCessation}>
-                          <strong>Ceased On: </strong><lightning-formatted-date-time value={dateOfCessation} time-zone="GMT"></lightning-formatted-date-time> <br>
-                        </div>
-                        <div if:true={isCommunityInterestCompany}>
-                          <lightning-icon icon-name="utility:world" alternative-text="Community Interest Company" variant="success" title="Community Interest Company" size="xx-small"></lightning-icon>
-                          <strong> Community Interest Company</strong>
-                        </div>
-                        <div if:false={canFile}>
-                          <lightning-icon icon-name="utility:warning" alternative-text="Cannot File!" variant="warning" title="Cannot File" size="xx-small"></lightning-icon>
-                          <strong> Cannot File</strong>
-                        </div>
-                        <div if:true={hasInsolvencyHistory}>
-                          <lightning-icon icon-name="utility:warning" alternative-text="Insolvency History!" variant="warning" title="Insolvency History" size="xx-small"></lightning-icon>
-                          <strong> Insolvency History</strong>
-                        </div>
-                      </lightning-layout-item>
-
-                      <lightning-layout-item if:true={accounts} size="4">
-                        <div class="slds-text-heading_small"><strong>Accounts </strong>
-                          <lightning-icon if:false={accountsOverdue} icon-name="utility:success" alternative-text="Not Overdue" variant="success" title="Not Overdue" size="xx-small"></lightning-icon>
-                          <lightning-badge if:true={accountsOverdue} label="Overdue" class="slds-theme_error"></lightning-badge><br>
-                        </div>
-                        <div if:true={lasAccountsTo}>
-                          <strong>Last Accounts: </strong><lightning-formatted-date-time value={lasAccountsTo} time-zone="GMT"></lightning-formatted-date-time><br>
-                        </div>
-                        <div if:true={nextAccountsTo}>
-                          <strong>Next Accounts Up To: </strong><lightning-formatted-date-time value={nextAccountsTo} time-zone="GMT"></lightning-formatted-date-time><br>
-                        </div>
-                        <div if:true={nextAccuontsDue}>
-                          <strong>Due By: </strong><lightning-formatted-date-time value={nextAccuontsDue} time-zone="GMT"></lightning-formatted-date-time><br>
-                        </div>
-                      </lightning-layout-item>
-
-                      <lightning-layout-item if:true={confirmationStatement} size="4">
-                        <div class="slds-text-heading_small"><strong>Confirmation Statement </strong>
-                            <lightning-icon if:false={statementsOverdue} icon-name="utility:success" alternative-text="Not Overdue" variant="success" title="Not Overdue" size="xx-small"></lightning-icon>
-                            <lightning-badge if:true={statementsOverdue} label="Overdue" class="slds-theme_error"></lightning-badge><br>
-                        </div>
-                        <div if:true={lastStatememtTo}>
-                          <strong>Last Statement: </strong><lightning-formatted-date-time value={lastStatememtTo} time-zone="GMT"></lightning-formatted-date-time> <br>
-                        </div>
-                        <div if:true={nextStatementTo}>
-                          <strong>Next Statement Up To: </strong><lightning-formatted-date-time value={nextStatementTo} time-zone="GMT"></lightning-formatted-date-time> <br>
-                        </div>
-                        <div if:true={nextStatementDue}>
-                          <strong>Due By: </strong><lightning-formatted-date-time value={nextStatementDue} time-zone="GMT"></lightning-formatted-date-time> <br>
-                        </div>
-                      </lightning-layout-item>
-                    </lightning-layout>
-
-
-                    <lightning-layout>
-                      <lightning-layout-item size="12">
-                        <div if:true={sicCodes}>
-                          <strong>Nature of Business (SIC):</strong><br>
-                          <ul>
-                            <template for:each={sicCodes} for:item="sicCode">
-                              <li key={sicCode.Id}>
-                                  {sicCode} <br>
-                              </li>
-                            </template>
-                          </ul>
-                        </div>
-                      </lightning-layout-item>
-                    </lightning-layout>
-                      
-                    <lightning-layout if:true={previosNamesData} class="slds-m-top_xx-small">
-                      <lightning-layout-item size="12">
-                        <div>
-                          <strong>Previous Company Names:</strong><br>
-                          <ul>
-                            <template for:each={previosNamesData} for:item="name">
-                              <li key={name.Id}>
-                                   {name.name}: <lightning-formatted-date-time value={name.effectivex5ffrom} time-zone="GMT"></lightning-formatted-date-time> - <lightning-formatted-date-time value={name.ceasedx5fon} time-zone="GMT"></lightning-formatted-date-time> <br>
-                              </li>
-                            </template>
-                          </ul>
-                        </div>
-                      </lightning-layout-item>
-                    </lightning-layout>
-
-                    <lightning-layout if:true={foreignCompany} class="slds-m-top_x-small">
-                      <lightning-layout-item size="12">
-                        <div class="slds-text-heading_small"><strong>Foreign Company Details</strong></div>
-                      </lightning-layout-item>
-                    </lightning-layout>
-
-                    <lightning-layout if:true={foreignCompany}>
-                      <lightning-layout-item size="4">
-                        <div if:true={incorporatedIn}>
-                          <strong>Incorporated In: </strong> {incorporatedIn} <br>
-                        </div>
-                        <div if:true={registrationNumber}>
-                          <strong>Registration Number: </strong> {registrationNumber} <br>
-                        </div>
-                        <div if:true={foreignCompanyLegalForm}>
-                          <strong>Legal Form: </strong> {foreignCompanyLegalForm} <br>
-                        </div>
-                        <div if:true={parentRegistry}>
-                          <strong>Parent Registry: </strong> {parentRegistry} <br>
-                        </div>
-                        <div if:true={governedBy}>
-                          <strong>Governing Law: </strong> {governedBy} <br>
-                        </div>
-                        <div if:true={businessActivity}>
-                          <strong>Business Activity: </strong> {businessActivity} <br>
-                        </div>
-                        <div if:true={creditFinanceInstitution}>
-                          <strong>Credit Finance Institution: </strong> {creditFinanceInstitution} <br>
-                        </div>
-                      </lightning-layout-item>
-
-                      <lightning-layout-item size="8">
-                        <strong>Account Filing:</strong> Required to publish accounts from {accountPeriodFromMonth} {accountPeriodFromDay} to {accountPeriodToMonth} {accountPeriodToDay} within {mustFilewithin} months under parent law <br>
-                        <strong>Terms of Account Publication: </strong> {termsOfAccountPublication} <br>
-                        <strong>Foreign Account Type: </strong> {foreignAccountType} <br>
-                      </lightning-layout-item>
-                    </lightning-layout>
-                  </lightning-layout-item>
-                </lightning-layout>
+              <div if:true={invalidCHNumber}>
+                <div class="slds-notify slds-notify_alert slds-alert_warning" role="alert">
+                  <div class="slds-m-right_small">
+                    <lightning-icon icon-name="utility:warning" alternative-text="Warning!" title="default style" size="small"> </lightning-icon>
+                  </div>
+                  <h2>
+                    Invalid Companies House Number ({cNum}). Please ensure the correct Companies House number is referenced
+                  </h2>
+                </div>
               </div>
-            </lightning-tab>
 
-            <lightning-tab label="Filing History">
+              <div if:true={unauthorizedApiKey}>
+                <div class="slds-notify slds-notify_alert slds-alert_warning" role="alert">
+                  <div class="slds-m-right_small">
+                    <lightning-icon icon-name="utility:warning" alternative-text="Warning!" title="default style" size="small"> </lightning-icon>
+                  </div>
+                  <h2>
+                    Incorrect or missing Companies House API Key. Please reach out to you administer to update the Companies House Named Credential
+                  </h2>
+                </div>
+              </div>
+
+            </span> 
+        </header>
+      </div>
+    </article>
+  </div>
+  
+  <div if:true={successCHNumber}>
+    <article class="slds-card slds-card_boundary spacingCard">
+      <div class="slds-card__header">
+        <header class="slds-media slds-media_center">
+          <img src={CH_Icon} alt="Companies House Logo" class="customIcon">
+            <span class="slds-media__body">
+              <h3 class="slds-card__header-title">
+                <a href={companyURL} title="Click to view Companies House webpage" target="_blank">
+                  <span>{companyName}</span>
+                </a>
+                <lightning-badge label={companyNumber} title="Company Number"></lightning-badge>
+                <lightning-badge label={companyStatus} class={statusBadgeTheme} title="Company Status"></lightning-badge>
+                <lightning-badge label={jurisdiction} title="Jurisdiction"></lightning-badge> <br>
+              </h3>
+              {companyOfficeAddress}<lightning-badge if:true={undeliverableRegOfficeAddress} label="Undeliverable" class="slds-theme_error"></lightning-badge>
+            </span>
+            <div class="slds-no-flex">
+              <button class="slds-button slds-button_neutral slds-float_right">Sync Customer</button>
+            </div> 
+        </header>
+      </div>
+
+      
+      <div class="slds-card__body slds-card__body_inner">
+        <lightning-tabset if:true={companyName}>
+          <lightning-tab label="Overview">
+
+            <div class="c-container">
+              <lightning-layout multiple-rows="true">
+                <lightning-layout-item size="12">
+                  
+                  <lightning-layout>
+                    <lightning-layout-item size="4">
+                      <div class="slds-text-heading_small"><strong>Details</strong></div>
+                      <strong>Company Type: </strong> {companyType} <br>
+                      <div if:true={dateOfCreation}>
+                        <div if:false={foreignCompany}>
+                          <strong>Incorporated On: </strong><lightning-formatted-date-time value={dateOfCreation} time-zone="GMT"></lightning-formatted-date-time><br>
+                        </div>
+                        <div if:true={foreignCompany}>
+                          <strong>First UK Establishment Opened: </strong><lightning-formatted-date-time value={dateOfCreation} time-zone="GMT"></lightning-formatted-date-time><br>
+                        </div>
+                      </div>
+                      <div if:true={dateOfCessation}>
+                        <strong>Ceased On: </strong><lightning-formatted-date-time value={dateOfCessation} time-zone="GMT"></lightning-formatted-date-time> <br>
+                      </div>
+                      <div if:true={isCommunityInterestCompany}>
+                        <lightning-icon icon-name="utility:world" alternative-text="Community Interest Company" variant="success" title="Community Interest Company" size="xx-small"></lightning-icon>
+                        <strong> Community Interest Company</strong>
+                      </div>
+                      <div if:false={canFile}>
+                        <lightning-icon icon-name="utility:warning" alternative-text="Cannot File!" variant="warning" title="Cannot File" size="xx-small"></lightning-icon>
+                        <strong> Cannot File</strong>
+                      </div>
+                      <div if:true={hasInsolvencyHistory}>
+                        <lightning-icon icon-name="utility:warning" alternative-text="Insolvency History!" variant="warning" title="Insolvency History" size="xx-small"></lightning-icon>
+                        <strong> Insolvency History</strong>
+                      </div>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item if:true={accounts} size="4">
+                      <div class="slds-text-heading_small"><strong>Accounts </strong>
+                        <lightning-icon if:false={accountsOverdue} icon-name="utility:success" alternative-text="Not Overdue" variant="success" title="Not Overdue" size="xx-small"></lightning-icon>
+                        <lightning-badge if:true={accountsOverdue} label="Overdue" class="slds-theme_error"></lightning-badge><br>
+                      </div>
+                      <div if:true={lasAccountsTo}>
+                        <strong>Last Accounts: </strong><lightning-formatted-date-time value={lasAccountsTo} time-zone="GMT"></lightning-formatted-date-time><br>
+                      </div>
+                      <div if:true={nextAccountsTo}>
+                        <strong>Next Accounts Up To: </strong><lightning-formatted-date-time value={nextAccountsTo} time-zone="GMT"></lightning-formatted-date-time><br>
+                      </div>
+                      <div if:true={nextAccuontsDue}>
+                        <strong>Due By: </strong><lightning-formatted-date-time value={nextAccuontsDue} time-zone="GMT"></lightning-formatted-date-time><br>
+                      </div>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item if:true={confirmationStatement} size="4">
+                      <div class="slds-text-heading_small"><strong>Confirmation Statement </strong>
+                          <lightning-icon if:false={statementsOverdue} icon-name="utility:success" alternative-text="Not Overdue" variant="success" title="Not Overdue" size="xx-small"></lightning-icon>
+                          <lightning-badge if:true={statementsOverdue} label="Overdue" class="slds-theme_error"></lightning-badge><br>
+                      </div>
+                      <div if:true={lastStatememtTo}>
+                        <strong>Last Statement: </strong><lightning-formatted-date-time value={lastStatememtTo} time-zone="GMT"></lightning-formatted-date-time> <br>
+                      </div>
+                      <div if:true={nextStatementTo}>
+                        <strong>Next Statement Up To: </strong><lightning-formatted-date-time value={nextStatementTo} time-zone="GMT"></lightning-formatted-date-time> <br>
+                      </div>
+                      <div if:true={nextStatementDue}>
+                        <strong>Due By: </strong><lightning-formatted-date-time value={nextStatementDue} time-zone="GMT"></lightning-formatted-date-time> <br>
+                      </div>
+                    </lightning-layout-item>
+                  </lightning-layout>
+
+
+                  <lightning-layout>
+                    <lightning-layout-item size="12">
+                      <div if:true={sicCodes}>
+                        <strong>Nature of Business (SIC):</strong><br>
+                        <ul>
+                          <template for:each={sicCodes} for:item="sicCode">
+                            <li key={sicCode.Id}>
+                                {sicCode} <br>
+                            </li>
+                          </template>
+                        </ul>
+                      </div>
+                    </lightning-layout-item>
+                  </lightning-layout>
+                    
+                  <lightning-layout if:true={previosNamesData} class="slds-m-top_xx-small">
+                    <lightning-layout-item size="12">
+                      <strong>Previous Company Names:</strong><br>
+                      <ul class="slds-has-dividers_top">
+                        <template for:each={previosNamesData} for:item="name">
+                          <li key={name.Id}>
+                                {name.name}: <lightning-formatted-date-time value={name.effectivex5ffrom} time-zone="GMT"></lightning-formatted-date-time> - <lightning-formatted-date-time value={name.ceasedx5fon} time-zone="GMT"></lightning-formatted-date-time> <br>
+                          </li>
+                        </template>
+                      </ul>
+                    </lightning-layout-item>
+                  </lightning-layout>
+
+                  <lightning-layout if:true={foreignCompany} class="slds-m-top_x-small">
+                    <lightning-layout-item size="12">
+                      <div class="slds-text-heading_small"><strong>Foreign Company Details</strong></div>
+                    </lightning-layout-item>
+                  </lightning-layout>
+
+                  <lightning-layout if:true={foreignCompany}>
+                    <lightning-layout-item size="4">
+                      <div if:true={incorporatedIn}>
+                        <strong>Incorporated In: </strong> {incorporatedIn} <br>
+                      </div>
+                      <div if:true={registrationNumber}>
+                        <strong>Registration Number: </strong> {registrationNumber} <br>
+                      </div>
+                      <div if:true={foreignCompanyLegalForm}>
+                        <strong>Legal Form: </strong> {foreignCompanyLegalForm} <br>
+                      </div>
+                      <div if:true={parentRegistry}>
+                        <strong>Parent Registry: </strong> {parentRegistry} <br>
+                      </div>
+                      <div if:true={governedBy}>
+                        <strong>Governing Law: </strong> {governedBy} <br>
+                      </div>
+                      <div if:true={businessActivity}>
+                        <strong>Business Activity: </strong> {businessActivity} <br>
+                      </div>
+                      <div if:true={creditFinanceInstitution}>
+                        <strong>Credit Finance Institution: </strong> {creditFinanceInstitution} <br>
+                      </div>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item size="8">
+                      <strong>Account Filing:</strong> Required to publish accounts from {accountPeriodFromMonth} {accountPeriodFromDay} to {accountPeriodToMonth} {accountPeriodToDay} within {mustFilewithin} months under parent law <br>
+                      <strong>Terms of Account Publication: </strong> {termsOfAccountPublication} <br>
+                      <strong>Foreign Account Type: </strong> {foreignAccountType} <br>
+                    </lightning-layout-item>
+                  </lightning-layout>
+                </lightning-layout-item>
+              </lightning-layout>
+            </div>
+          </lightning-tab>
+
+          <template if:false={filingHideTab}>
+            <lightning-tab label={filingTabName}>
               <div class="slds-p-bottom_x-small">
                 <div class="slds-clearfix">
                   <div class="slds-float_left">
@@ -180,7 +217,7 @@
                     name="items-filter"
                     label="Number of Items"
                     options={itemsFilter}
-                    value="15"
+                    value="10"
                     onchange={handleItemsFilterChange}
                     class="slds-float_left">
                   </lightning-combobox>
@@ -218,8 +255,10 @@
                 Page: {pageNumber} of {totalPageCount}
               </div>
             </lightning-tab>
+          </template>
 
-            <lightning-tab label="Offiecrs">
+          <template if:false={officerHideTab}>
+            <lightning-tab label={officerTabName}>
                 <div>
                   <div if:false={showOfficerCard}>
                     <div class="slds-p-bottom_xxx-small">
@@ -350,40 +389,44 @@
                   </div>
                 </div>
             </lightning-tab>
+          </template>
 
-            <lightning-tab label="Persons with Significant Control">
-                <template for:each={pscData} for:item="psc">
-                  <lightning-card 
-                    title={psc.name} 
-                    key={psc.name}>
-                    <div class="slds-p-horizontal_small">
-                      <strong> Principal Office Address: {psc.principalx5fofficex5faddress} </strong> <br>
-                      <strong> Notified On: </strong> <lightning-formatted-date-time value={psc.notifiedx5fon} time-zone="GMT"></lightning-formatted-date-time><br>
-                      <strong> Nature of Control: </strong> {psc.naturesx5fofx5fcontrol} <br>
-                      <strong> Nationality: </strong> {psc.nationality} <br>
-                      <strong> PSC Kind: </strong> {psc.kind} <br>
-                      <strong> Is Sanctioned: </strong> {psc.isx5fsanctioned} <br>
-                    </div>
+          <template if:false={pscHideTab}>
+            <lightning-tab label={pscTabName}>
+              <template for:each={pscData} for:item="psc">
+                <lightning-card 
+                  title={psc.name} 
+                  key={psc.name}>
+                  <div class="slds-p-horizontal_small">
+                    <strong> Principal Office Address: {psc.principalx5fofficex5faddress} </strong> <br>
+                    <strong> Notified On: </strong> <lightning-formatted-date-time value={psc.notifiedx5fon} time-zone="GMT"></lightning-formatted-date-time><br>
+                    <strong> Nature of Control: </strong> {psc.naturesx5fofx5fcontrol} <br>
+                    <strong> Nationality: </strong> {psc.nationality} <br>
+                    <strong> PSC Kind: </strong> {psc.kind} <br>
+                    <strong> Is Sanctioned: </strong> {psc.isx5fsanctioned} <br>
+                  </div>
 
-                    <div if:true={psc.identification} class="slds-p-horizontal_small">
-                      <strong> Registration Number: </strong> {psc.identification.registrationx5fnumber} <br>
-                      <strong> Place Registered: </strong> {psc.identification.placex5fregistered} <br>
-                      <strong> Legal Form: </strong> {psc.identification.legalx5fform} <br>
-                      <strong> Legal Authority: {psc.identification.legalx5fauthority} </strong> <br>
-                      <strong> Country Registered: {psc.identification.countryx5fregistered} </strong> <br>
-                    </div>
-                    <div class="slds-p-horizontal_small">
-                      <strong> Description: </strong> {psc.description} <br>
-                      <strong> Date of Birth: </strong> {psc.pscDateofBirth} <br>
-                      <strong> Country of Residence: </strong> {psc.countryx5fofx5fresidence} <br>
-                      <strong> Ceased On: </strong> {psc.ceasedx5fon} <br>
-                      <strong> Address: </strong> {psc.address} <br>
-                    </div>
-                  </lightning-card>
+                  <div if:true={psc.identification} class="slds-p-horizontal_small">
+                    <strong> Registration Number: </strong> {psc.identification.registrationx5fnumber} <br>
+                    <strong> Place Registered: </strong> {psc.identification.placex5fregistered} <br>
+                    <strong> Legal Form: </strong> {psc.identification.legalx5fform} <br>
+                    <strong> Governing Law: </strong> {psc.identification.legalx5fauthority}  <br>
+                    <strong> Country Registered: </strong> {psc.identification.countryx5fregistered}  <br>
+                  </div>
+                  <div class="slds-p-horizontal_small">
+                    <strong> Description: </strong> {psc.description} <br>
+                    <strong> Date of Birth: </strong> {psc.pscDateofBirth} <br>
+                    <strong> Country of Residence: </strong> {psc.countryx5fofx5fresidence} <br>
+                    <strong> Ceased On: </strong> {psc.ceasedx5fon} <br>
+                    <strong> Address: </strong> {psc.address} <br>
+                  </div>
+                </lightning-card>
               </template>
             </lightning-tab>
+          </template>
 
-            <lightning-tab label="UK Establishments">
+          <template if:false={hideukEstablishmentsTab}>
+            <lightning-tab label={ukEstablishmentsTabName}>
               <lightning-datatable 
                 key-field = "id" 
                 data={ukEstablishmentsData} 
@@ -391,8 +434,10 @@
                 hide-checkbox-column>
               </lightning-datatable>
             </lightning-tab>
+          </template>
 
-            <lightning-tab label="Charges">
+          <template if:false={chargesHideTab}>
+            <lightning-tab label={chargesTabName}>
               <div if:false={showChargeCard}>
                 Total Charges: {totalCharges}  <br>
                 {satisfiedCharges} Satisfied / {partiallySatisfiedCharges} Partially Satisfied
@@ -476,33 +521,40 @@
                   </lightning-datatable>
               </lightning-card>
             </lightning-tab>
-            <lightning-tab label="Insolvency">
-            <template for:each={insolvencyData} for:item="insolvencyCase">
-              <lightning-card 
-                title={insolvencyCase.insolvencyName} 
-                key={insolvencyCase.name}>
-                <div class="slds-p-horizontal_small">
-                  <ul>
-                    <template for:each={insolvencyCase.dates} for:item="date">
-                      <li key={date.Id}>
-                          {date.z0type}: <lightning-formatted-date-time value={date.z0date} time-zone="GMT"></lightning-formatted-date-time>
-                      </li>
-                    </template>
-                  </ul>
-                  <ul>
-                    <template for:each={insolvencyCase.practitioners} for:item="practitioner">
-                      <li key={practitioner.Id}>
-                        <strong>Practitioners: </strong> <br>
-                        {practitioner.name}: <br>
-                        {practitioner.practitionerAddress}: <br>
-                      </li>
-                    </template>
-                  </ul>
-                </div>
-              </lightning-card>
           </template>
+
+          <template if:false={hideInsolvencyTab}>
+            <lightning-tab label={insolvencyTabName}>
+              <template for:each={insolvencyData} for:item="insolvencyCase">
+                <lightning-card 
+                  title={insolvencyCase.insolvencyName} 
+                  key={insolvencyCase.name}>
+                  <div class="slds-p-horizontal_small">
+                    <ul>
+                      <template for:each={insolvencyCase.dates} for:item="date">
+                        <li key={date.Id}>
+                            <strong>{date.z0type}: </strong> <lightning-formatted-date-time value={date.z0date} time-zone="GMT"></lightning-formatted-date-time>
+                        </li>
+                      </template>
+                    </ul>
+                    <ul>
+                      <template for:each={insolvencyCase.practitioners} for:item="practitioner">
+                        <li key={practitioner.Id}>
+                          <strong>Practitioners: </strong> <br>
+                          {practitioner.name}: <br>
+                          {practitioner.practitionerAddress}: <br>
+                        </li>
+                      </template>
+                    </ul>
+                  </div>
+                </lightning-card>
+              </template>
             </lightning-tab>
+          </template>
+
         </lightning-tabset>
-    </div>
-  </article>
+      </div>
+    </article>
+  </div>
+
 </template>

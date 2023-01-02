@@ -1,5 +1,6 @@
 public class compHouseCallout {
-    
+    // Application domain exception
+    public class compHouseCalloutException extends Exception {}
 
     //Need to figure out how to pass field API into return string
     @AuraEnabled(cacheable=true)
@@ -24,8 +25,13 @@ public class compHouseCallout {
             return JSON.serialize(res.Code200);
         
         }catch(ExternalService.CompaniesHouse.getCompanyByNumber_ResponseException exc){
-            System.debug(exc);
-            return 'not good';
+            if (exc.ResponseCode == 404) {
+                throw new compHouseCalloutException('404: Company not found');
+            } else if (exc.ResponseCode == 401) {
+                throw new compHouseCalloutException('401: Unauthorized API Key');
+            } else {
+                throw new compHouseCalloutException('Unknown error; ' + exc.ResponseCode + ': ' + exc.DefaultResponse);
+            }
         }
     }
 
@@ -44,8 +50,13 @@ public class compHouseCallout {
             return JSON.serialize(res.Code200);
         
         }catch(ExternalService.CompaniesHouse.getFilingHistoryList_ResponseException exc){
-            System.debug(exc);
-            return 'not good';
+            if (exc.ResponseCode == 404) {
+                throw new compHouseCalloutException('404: Filing history not found');
+            } else if (exc.ResponseCode == 401) {
+                throw new compHouseCalloutException('401: Unauthorized API Key');
+            } else {
+                throw new compHouseCalloutException('Unknown error; ' + exc.ResponseCode + ': ' + exc.DefaultResponse);
+            }
         }
     }
 
@@ -63,8 +74,13 @@ public class compHouseCallout {
             return JSON.serialize(res.Code200);
         
         }catch(ExternalService.CompaniesHouse.getCompanyOfficersList_ResponseException exc){
-            System.debug(exc);
-            return 'not good';
+            if (exc.ResponseCode == 400) {
+                throw new compHouseCalloutException('400: Bad request - see error log');
+            } else if (exc.ResponseCode == 401) {
+                throw new compHouseCalloutException('401: Unauthorized API Key');
+            } else {
+                throw new compHouseCalloutException('Unknown error; ' + exc.ResponseCode + ': ' + exc.DefaultResponse);
+            }
         }
     }
 
@@ -80,8 +96,13 @@ public class compHouseCallout {
             return JSON.serialize(res.Code200);
         
         }catch(ExternalService.CompaniesHouse.getOfficerAppointments_ResponseException exc){
-            System.debug(exc);
-            return 'not good';
+            if (exc.ResponseCode == 400) {
+                throw new compHouseCalloutException('400: Bad request - see error log');
+            } else if (exc.ResponseCode == 401) {
+                throw new compHouseCalloutException('401: Unauthorized API Key');
+            } else {
+                throw new compHouseCalloutException('Unknown error; ' + exc.ResponseCode + ': ' + exc.DefaultResponse);
+            }
         }
     }
 
@@ -93,12 +114,16 @@ public class compHouseCallout {
         req.companyx5fnumber = compNumber;
         try{
             ExternalService.CompaniesHouse.getPersonsWithSignificantControlList_Response res = service.getPersonsWithSignificantControlList(req);
-            //System.Debug(JSON.serialize(res.Code200));
             return JSON.serialize(res.Code200);
-        
-        }catch(ExternalService.CompaniesHouse.getPersonsWithSignificantControlList_ResponseException exc){
-            System.debug(exc);
-            return 'not good';
+
+        } catch (ExternalService.CompaniesHouse.getPersonsWithSignificantControlList_ResponseException exc){
+            if (exc.ResponseCode == 404) {
+                throw new compHouseCalloutException('404: PSC not found');
+            } else if (exc.ResponseCode == 401) {
+                throw new compHouseCalloutException('401: Unauthorized API Key');
+            } else {
+                throw new compHouseCalloutException('Unknown error; ' + exc.ResponseCode + ': ' + exc.DefaultResponse);
+            }
         }
     }
 
@@ -113,9 +138,12 @@ public class compHouseCallout {
            //System.Debug(JSON.serialize(res.Code200));
             return JSON.serialize(res.Code200);
         
-        }catch(ExternalService.CompaniesHouse.getCompanyUKEstablishments_ResponseException exc){
-            System.debug(exc);
-            return 'not good';
+        } catch (ExternalService.CompaniesHouse.getCompanyUKEstablishments_ResponseException exc){
+            if (exc.ResponseCode == 401) {
+                throw new compHouseCalloutException('401: Unauthorized API Key');
+            } else {
+                throw new compHouseCalloutException('Unknown error; ' + exc.ResponseCode + ': ' + exc.DefaultResponse);
+            }
         }
     }
 
@@ -130,9 +158,14 @@ public class compHouseCallout {
             //System.Debug(JSON.serialize(res.Code200));
             return JSON.serialize(res.Code200);
         
-        }catch(ExternalService.CompaniesHouse.getCompanyChargesList_ResponseException exc){
-            System.debug(exc);
-            return 'not good';
+        } catch (ExternalService.CompaniesHouse.getCompanyChargesList_ResponseException exc){
+            if (exc.ResponseCode == 404) {
+                throw new compHouseCalloutException('404: Charges not found');
+            } else if (exc.ResponseCode == 401) {
+                throw new compHouseCalloutException('401: Unauthorized API Key');
+            } else {
+                throw new compHouseCalloutException('Unknown error; ' + exc.ResponseCode + ': ' + exc.DefaultResponse);
+            }
         }
     }
 
@@ -144,12 +177,17 @@ public class compHouseCallout {
         req.companyx5fnumber = compNumber;
         try{
             ExternalService.CompaniesHouse.getCompanyInsolvency_Response res = service.getCompanyInsolvency(req);
-            System.Debug(JSON.serialize(res.Code200));
+            //System.Debug(JSON.serialize(res.Code200));
             return JSON.serialize(res.Code200);
         
         }catch(ExternalService.CompaniesHouse.getCompanyInsolvency_ResponseException exc){
-            System.debug(exc);
-            return 'not good';
+            if (exc.ResponseCode == 404) {
+                throw new compHouseCalloutException('404: Insolvency not found');
+            } else if (exc.ResponseCode == 401) {
+                throw new compHouseCalloutException('401: Unauthorized API Key');
+            } else {
+                throw new compHouseCalloutException('Unknown error; ' + exc.ResponseCode + ': ' + exc.DefaultResponse);
+            }
         }
     }
         

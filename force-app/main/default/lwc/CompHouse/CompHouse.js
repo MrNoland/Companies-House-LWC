@@ -1,5 +1,9 @@
 import { LightningElement, api, wire, track } from 'lwc';
-import translate from './translations';
+import translateCompany from './translations_company';
+import translatePSC from './translations_psc';
+import translateCharges from './translations_charges';
+import translateFilings1 from './translations_filings1';
+import translateFilings2 from './translations_filings2';
 import obtainCompanyNumber from '@salesforce/apex/compHouseCallout.obtainCompanyNumber';
 import getCompanyInfo from '@salesforce/apex/compHouseCallout.getCompanyInfo';
 import getFilingHistory from '@salesforce/apex/compHouseCallout.getFilingHistory';
@@ -30,6 +34,9 @@ export default class CompaniesHouse extends LightningElement {
   }
 
   //Set company info field variables
+  @api unauthorizedApiKey;
+  @api invalidCHNumber;
+  @api successCHNumber;
   @api companyInfo;
   @api companyName;
   @api companyNumber;
@@ -86,12 +93,13 @@ export default class CompaniesHouse extends LightningElement {
   @wire(getCompanyInfo, {compNumber: '$cNum'})
   wiredCompany({error, data}) {
     if (data) {
-      console.log(data);
+      //console.log(data);
+      this.successCHNumber = true;
       this.companyInfo = JSON.parse(data);
       this.companyURL = "https://find-and-update.company-information.service.gov.uk" + this.companyInfo.links.self;
       this.companyName = this.companyInfo.companyx5fname;
       this.companyNumber = this.companyInfo.companyx5fnumber;
-      this.companyStatus = translate('company_status', this.companyInfo.companyx5fstatus);
+      this.companyStatus = translateCompany('company_status', this.companyInfo.companyx5fstatus);
       if (this.companyStatus === 'Active' || this.companyStatus ==='Open' || this.companyStatus === 'Registered') {
         this.statusBadgeTheme = 'slds-theme_success'
       } else {
@@ -117,7 +125,7 @@ export default class CompaniesHouse extends LightningElement {
                       } if (this.companyInfo.registeredx5fofficex5faddress.postalx5fcode !== null) {
                         this.companyOfficeAddress = this.companyOfficeAddress + ", " + this.companyInfo.registeredx5fofficex5faddress.postalx5fcode
                         }
-      this.companyType = translate('company_type', this.companyInfo.z0type);
+      this.companyType = translateCompany('company_type', this.companyInfo.z0type);
       this.dateOfCreation = this.companyInfo.datex5fofx5fcreation;
       this.dateofCessation = this.companyInfo.datex5fofx5fcessation;
       this.canFile = this.companyInfo.canx5ffile;
@@ -125,7 +133,7 @@ export default class CompaniesHouse extends LightningElement {
       this.hasCharges = this.companyInfo.hasx5fcharges;
       this.hasInsolvencyHistory = this.companyInfo.hasx5finsolvencyx5fhistory;
       this.isCommunityInterestCompany = this.companyInfo.isx5fcommunityx5finterestx5fcompany;
-      this.jurisdiction = translate('jurisdiction', this.companyInfo.jurisdiction);
+      this.jurisdiction = translateCompany('jurisdiction', this.companyInfo.jurisdiction);
       this.registeredOfficeinDispute = this.companyInfo.registeredx5fofficex5fisx5finx5fdispute;
       this.undeliverableRegOfficeAddress = this.companyInfo.undeliverablex5fregisteredx5fofficex5faddress;
       
@@ -148,7 +156,7 @@ export default class CompaniesHouse extends LightningElement {
       this.sicCodes = this.companyInfo.sicx5fcodes;
       if (this.sicCodes !== null) {
         for(var x= 0; x < this.sicCodes.length; x++) {
-          this.sicCodes[x] = this.sicCodes[x] + " - " + translate('sic_descriptions', this.sicCodes[x]);
+          this.sicCodes[x] = this.sicCodes[x] + " - " + translateCompany('sic_descriptions', this.sicCodes[x]);
         };
       };
       
@@ -164,17 +172,21 @@ export default class CompaniesHouse extends LightningElement {
         this.foreignCompanyLegalForm = this.companyInfo.foreignx5fcompanyx5fdetails.legalx5fform;
         this.businessActivity = this.companyInfo.foreignx5fcompanyx5fdetails.businessx5factivity;
         this.mustFilewithin = this.companyInfo.foreignx5fcompanyx5fdetails.accounts.mustx5ffilex5fwithin.months;
-        this.accountPeriodToMonth = translate('month', this.companyInfo.foreignx5fcompanyx5fdetails.accounts.accountx5fperiodx5fto.month);
+        this.accountPeriodToMonth = translateCompany('month', this.companyInfo.foreignx5fcompanyx5fdetails.accounts.accountx5fperiodx5fto.month);
         this.accountPeriodToDay = this.companyInfo.foreignx5fcompanyx5fdetails.accounts.accountx5fperiodx5fto.day;
-        this.accountPeriodFromMonth = translate('month', this.companyInfo.foreignx5fcompanyx5fdetails.accounts.accountx5fperiodx5ffrom.month);
+        this.accountPeriodFromMonth = translateCompany('month', this.companyInfo.foreignx5fcompanyx5fdetails.accounts.accountx5fperiodx5ffrom.month);
         this.accountPeriodFromDay = this.companyInfo.foreignx5fcompanyx5fdetails.accounts.accountx5fperiodx5ffrom.day;
-        this.termsOfAccountPublication = translate('terms_of_account_publication', this.companyInfo.foreignx5fcompanyx5fdetails.accountingx5frequirement.termsx5fofx5faccountx5fpublication);
-        this.foreignAccountType = translate('foreign_account_type', this.companyInfo.foreignx5fcompanyx5fdetails.accountingx5frequirement.foreignx5faccountx5ftype);
+        this.termsOfAccountPublication = translateCompany('terms_of_account_publication', this.companyInfo.foreignx5fcompanyx5fdetails.accountingx5frequirement.termsx5fofx5faccountx5fpublication);
+        this.foreignAccountType = translateCompany('foreign_account_type', this.companyInfo.foreignx5fcompanyx5fdetails.accountingx5frequirement.foreignx5faccountx5ftype);
       }
       
     } else if (error) {
-      this.testError = "Error!";
-      console.log(error);
+      console.log(error.body.message)
+      if (error.body.message === '401: Unauthorized API Key') {
+        this.unauthorizedApiKey = true;
+      } else if (error.body.message === '404: Company not found') {
+        this.invalidCHNumber = true;
+      }
     }
   }
 
@@ -198,6 +210,8 @@ export default class CompaniesHouse extends LightningElement {
       },
   ];
 
+  @api filingTabName;
+  @api filingHideTab;
   @api viewDownload;
   @api filingHistoryData = []
   @api filingHistoryCount
@@ -214,6 +228,7 @@ export default class CompaniesHouse extends LightningElement {
     {label: 'Mortgage', value: 'mortgage'},
     {label: 'Officers', value: 'officers'},
     {label: 'Resolution', value: 'resolution'},
+    {label: 'Other', value: 'other'},
     ]
   @api itemsFilter = [
     {label: '5', value: '5'},
@@ -225,7 +240,7 @@ export default class CompaniesHouse extends LightningElement {
     {label: '35', value: '35'},
   ]
   @api categoryFilter = [];
-  @api itemsPerPage = 15;
+  @api itemsPerPage = 10;
   @api startIndex = 0;
   @api totalPageCount;
   @api pageNumber = 1;
@@ -274,11 +289,12 @@ export default class CompaniesHouse extends LightningElement {
   @wire(getFilingHistory, {compNumber: '$cNum', categoryFilter: '$categoryFilter', itemsPerPage: '$itemsPerPage', startIndex: '$startIndex'})
   wiredFilingList({error, data}) {
     if (data) {
+      console.log(data);
       this.filingHistoryCount = JSON.parse(data).totalx5fcount;
       this.totalPageCount = Math.ceil(this.filingHistoryCount/this.itemsPerPage)
       this.updatePageButtons();
       this.filingHistoryData = JSON.parse(data).items;
-      //console.log(this.filingHistoryData);
+      this.filingTabName = "Filing History (" + this.filingHistoryCount + ")";
       this.filingHistoryData.forEach(filingHistoryData => {
         if (filingHistoryData['pages'] === 1){
           filingHistoryData['barcode'] = filingHistoryData['barcode'] + " (" + filingHistoryData['pages'] + " page)";
@@ -286,11 +302,34 @@ export default class CompaniesHouse extends LightningElement {
           filingHistoryData['barcode'] = filingHistoryData['barcode'] + " (" + filingHistoryData['pages'] + " pages)";
         };
         filingHistoryData['pages'] = "https://beta.companieshouse.gov.uk" + filingHistoryData['links']['self'] + "/document?format=pdf&download=0";
-        filingHistoryData['category'] = translate('filing_category', filingHistoryData['category']);
+        filingHistoryData['category'] = translateFilings1('filing_category', filingHistoryData['category']);
+        if (translateFilings2('description', filingHistoryData['description']) == null){
+          filingHistoryData['description'] = translateFilings1('description', filingHistoryData['description']);
+        } else {
+          filingHistoryData['description'] = translateFilings2('description', filingHistoryData['description'])
+        }
+        
+        for (const [key, value] of Object.entries(filingHistoryData['descriptionx5fvalues'])){
+          //console.log("for loop worked")
+          if (`${value}` !== "null") {
+            //console.log(`${value}`)
+            var serviceKey = `${key}`
+            //console.log(serviceKey)
+            if (serviceKey != 'description'){
+              serviceKey = "{" + serviceKey.replace(/x5f/g, "_") + "}"
+            }            
+            //console.log("serviceKey: " + serviceKey)
+            //console.log(filingHistoryData['description'])
+            if (filingHistoryData['description'].includes(serviceKey)){
+              filingHistoryData['description'] = filingHistoryData['description'].replace(serviceKey, filingHistoryData['descriptionx5fvalues'][`${key}`]);
+            }
+            console.log(filingHistoryData['description']);
+          };
+        }
       });
-      //console.log(this.filingHistoryData);
     } else if (error) {
-      this.testError = "Filing List Error!";
+      this.filingHideTab = true;
+      console.log(error.body.message)
     }
   }
 
@@ -321,6 +360,8 @@ export default class CompaniesHouse extends LightningElement {
   @api officerActiveCount;
   @api officerResignedCount;
   @api officerTotalCount;
+  @api officerTabName;
+  @api officerHideTab;
 
   @api officerName;
   @api officerResponsibilities;
@@ -400,9 +441,9 @@ export default class CompaniesHouse extends LightningElement {
     this.officerformerNames = event.detail.row.formerx5fnames;
     if (event.detail.row.datex5fofx5fbirth !== null ) {
       if (event.detail.row.datex5fofx5fbirth.day == null) {
-        this.officerDateOfBirth = translate("month" , event.detail.row.datex5fofx5fbirth.month) + " " + String(event.detail.row.datex5fofx5fbirth.year);
+        this.officerDateOfBirth = translateCompany("month" , event.detail.row.datex5fofx5fbirth.month) + " " + String(event.detail.row.datex5fofx5fbirth.year);
       } else {
-        this.officerDateOfBirth = translate("month" , event.detail.row.datex5fofx5fbirth.month) + " " + String(event.detail.row.datex5fofx5fbirth.day) + " " + String(event.detail.row.datex5fofx5fbirth.year);
+        this.officerDateOfBirth = translateCompany("month" , event.detail.row.datex5fofx5fbirth.month) + " " + String(event.detail.row.datex5fofx5fbirth.day) + " " + String(event.detail.row.datex5fofx5fbirth.year);
       }
     } else {
       this.officerDateOfBirth = null;
@@ -432,6 +473,7 @@ export default class CompaniesHouse extends LightningElement {
   @wire(getCompanyOfficersList, {compNumber: '$cNum', itemsPerPage: '$officersPerPage', startIndex: '$officerStartIndex'})
   wiredOfficerList({data, error}) {
     if (data) {
+      //console.log(data);
       this.officerData = JSON.parse(data).items;
       this.filteredOfficerData = this.officerData.filter(officer => officer.resignedx5fon == null);
       this.filteredOfficerCount = this.filteredOfficerData.length;
@@ -440,13 +482,15 @@ export default class CompaniesHouse extends LightningElement {
       this.officerActiveCount = JSON.parse(data).totalx5fresults - JSON.parse(data).resignedx5fcount;
       this.officerResignedCount = Math.trunc(JSON.parse(data).resignedx5fcount);
       this.totalOfficerPageCount = Math.ceil(this.officerTotalCount/this.officersPerPage);
+      this.officerTabName = "Officers (" + this.officerTotalCount + ")"
       this.updateOfficerPageButtons();
       for (const obj of this.officerData) {
-        obj.officerx5frole = translate('officer_role', obj.officerx5frole);
+        obj.officerx5frole = translateCompany('officer_role', obj.officerx5frole);
         obj.nameURL = "https://find-and-update.company-information.service.gov.uk/" + obj.links.officer.appointments;
       };
     } else if (error) {
-      this.testError = "Officer List Error!";
+      this.officerHideTab = true;
+      console.log(error.body.message)
     }
   }
     //callout to getOfficerAppointments to obtain data
@@ -473,48 +517,63 @@ export default class CompaniesHouse extends LightningElement {
     @wire(getOfficerAppointments, {officerId: '$officerId'})
     wiredofficerAppointments({error, data}) {
       if (data) {
-        //console.log(data);
+        console.log(data);
         this.officerAppointmentsData = JSON.parse(data).items;
         for (const obj of this.officerAppointmentsData) {
-          obj.officerx5frole = translate('officer_role', obj.officerx5frole);
+          obj.officerx5frole = translateCompany('officer_role', obj.officerx5frole);
           obj.companyName = obj.appointedx5fto.companyx5fname;
-          obj.companyStatus = translate('company_status', obj.appointedx5fto.companyx5fstatus);
+          obj.companyStatus = translateCompany('company_status', obj.appointedx5fto.companyx5fstatus);
           obj.companyURL = 'https://find-and-update.company-information.service.gov.uk' + obj.links.company;
         };
       } else if (error) {
-        this.testError = "Officer Appoints Error!";
+        console.log(error.body.message)
       }
     }
 
   //callout to getPersonsWithSignificantControlList to obtain data
   @api pscData = [];
+  @api pscErrors = [];
   @api pscDateofBirth;
   @api pscName;
-  @api pscKind
+  @api pscKind;
+  @api pscTotal;
+  @api pscActive;
+  @api pscCeased;
+  @api pscTabName;
+  @api pscHideTab;
   @wire(getPersonsWithSignificantControlList, {compNumber: '$cNum'})
   wiredPscList({error, data}) {
     if (data) {
       //console.log(data);
       this.pscData = JSON.parse(data).items;
+      this.pscActive = JSON.parse(data).activex5fcount;
+      this.pscCeased = JSON.parse(data).ceasedx5fcount;
+      this.pscTotal = JSON.parse(data).totalx5fresults;
+      this.pscTabName = "PSC (" + this.pscTotal + ")";
       for (const obj of this.pscData) {
-        obj.kind = translate('pscKind', obj.kind);
+        obj.kind = translatePSC('pscKind', obj.kind);
+        for (var x= 0; x < obj.naturesx5fofx5fcontrol.length; x++) {
+          obj.naturesx5fofx5fcontrol[x] = translatePSC('psc_short_description', obj.naturesx5fofx5fcontrol[x])
+        }
         if (obj.datex5fofx5fbirth !== null ) {
           if (obj.datex5fofx5fbirth.day == null) {
-            obj.pscDateofBirth = translate("month" , obj.datex5fofx5fbirth.month) + " " + String(obj.datex5fofx5fbirth.year);
+            obj.pscDateofBirth = translatePSC("month" , obj.datex5fofx5fbirth.month) + " " + String(obj.datex5fofx5fbirth.year);
           } else {
-            obj.pscDateofBirth = translate("month" , obj.datex5fofx5fbirth.month) + " " + String(obj.datex5fofx5fbirth.day) + " " + String(obj.datex5fofx5fbirth.year);
+            obj.pscDateofBirth = translatePSC("month" , obj.datex5fofx5fbirth.month) + " " + String(obj.datex5fofx5fbirth.day) + " " + String(obj.datex5fofx5fbirth.year);
           }
-        } if (obj.address.address == null) {
+        } 
+        if (obj.address.address == null) {
           obj.address == null
         }
       }
-      //console.log(JSON.stringify(pscdata));
     } else if (error) {
-      this.testError = "PSC List error!";
+      this.pscHideTab = true;
+      console.log(error.body.message);
     }
   }
 
   //callout to getCompanyUKEstablishments to obtain data
+  //When no UK Establishments are found, it returns an empty string of Items instead of an error
   @api ukEstablishmentsColumns = [
     { label: 'Company Name', fieldName: 'companyURL', type: 'url',
         cellAttributes: {
@@ -533,18 +592,27 @@ export default class CompaniesHouse extends LightningElement {
     { label: 'Locality', fieldName: 'locality'},
   ];
   @api ukEstablishmentsData = [];
+  @api ukEstablishmentsCount;
+  @api hideukEstablishmentsTab;
+  @api ukEstablishmentsTabName;
   @wire(getCompanyUKEstablishments, {compNumber: '$cNum'})
   wiredUKEstablishments({error, data}) {
     if (data) {
       //console.log(data);
       this.ukEstablishmentsData = JSON.parse(data).items;
+      this.ukEstablishmentsCount = this.ukEstablishmentsData.length;
+      if (this.ukEstablishmentsCount === 0) {
+        this.hideukEstablishmentsTab = true;
+      } else { 
+        this.ukEstablishmentsTabName = "UK Establishments (" + this.ukEstablishmentsCount + ")"
+      }
       for (const obj of this.ukEstablishmentsData) {
-        obj.companyx5fstatus = translate('company_status', obj.companyx5fstatus);
+        obj.companyx5fstatus = translateCompany('company_status', obj.companyx5fstatus);
         obj.companyName = obj.companyx5fname;
         obj.companyURL = 'https://find-and-update.company-information.service.gov.uk' + obj.links.company;
       };
     } else if (error) {
-      this.testError = "UK Establishments Error!";
+      console.log(error.body.message);
     }
   }
 
@@ -555,7 +623,6 @@ export default class CompaniesHouse extends LightningElement {
     { label: 'Delivered', fieldName: 'deliveredx5fon'},
     { label: 'Status', fieldName: 'status'},
     { label: 'Persons Entitled', fieldName: 'personsEntitled'},//Only showing first value, need to figure out how to show all
-    { label: 'Description', fieldName: 'particularsDescription', wrapText: true},
   ];
   @api chargesData = [];
 
@@ -607,14 +674,14 @@ export default class CompaniesHouse extends LightningElement {
     this.chargeDeliveredOn = event.detail.row.deliveredx5fon;
     this.chargeCreatedOn = event.detail.row.createdx5fon;
     this.chargeInsolvencyCases = event.detail.row.insolvencyx5fcases;
-    this.chargeParticularsType = translate('particular-description', event.detail.row.particulars.z0type);
+    this.chargeParticularsType = translateCharges('particular-description', event.detail.row.particulars.z0type);
     this.chargeParticularsDescription = event.detail.row.particulars.description;
     this.chargeParticularsFloating = event.detail.row.particulars.containsx5ffloatingx5fcharge;
     this.chargeParticularsFixed = event.detail.row.particulars.containsx5ffixedx5fcharge;
     this.chargeResolvedOn = event.detail.row.resolvedx5fon;
     this.chargeSatisfiedOn = event.detail.row.satisfiedx5fon;
     if (event.detail.row.securedx5fdetails !== null){
-      this.chargeSecuredtype = translate('secured-details-description' , event.detail.row.securedx5fdetails.z0type);
+      this.chargeSecuredtype = translateCharges('secured-details-description' , event.detail.row.securedx5fdetails.z0type);
       this.chargeSecuredDescription = event.detail.row.securedx5fdetails.description;
     } else {
       this.chargeSecuredtype = null;
@@ -625,7 +692,7 @@ export default class CompaniesHouse extends LightningElement {
     this.transactionsData = event.detail.row.transactions;
     for (const obj of this.transactionsData){
       obj.filingURL = "https://beta.companieshouse.gov.uk" + obj.links.filing + "/document?format=pdf&download=0";
-      obj.filingType = translate('filing_type', obj.filingx5ftype)
+      obj.filingType = translateCharges('filing_type', obj.filingx5ftype)
     }
   }
 
@@ -642,43 +709,53 @@ export default class CompaniesHouse extends LightningElement {
   @api satisfiedCharges;
   @api partiallySatisfiedCharges;
   @api filteredChargesData;
+  @api chargesTabName;
+  @api chargesHideTab;
   @wire(getCompanyChargesList, {compNumber: '$cNum'})
   wiredCompanyCharges({error, data}) {
     if (data) {
       //console.log(data);
       this.totalCharges = JSON.parse(data).unfilteredx5fcount;
+      if (this.totalCharges === 0) {
+        this.chargesHideTab = true;
+      }
+      this.chargesTabName = "Charges (" + this.totalCharges + ")"
       this.satisfiedCharges = JSON.parse(data).satisfiedx5fcount;
       this.partiallySatisfiedCharges = JSON.parse(data).partx5fsatisfiedx5fcount;
       this.chargesData = JSON.parse(data).items;
       this.filteredChargesData = this.chargesData.filter(charge => charge.status === 'part-satisfied' || charge.status === 'outstanding');
-      //console.log(filteredChargesData);
       for (const obj of this.chargesData) {
         obj.description = obj.classification.description;
         if (obj.satisfiedx5fon !== null){
-          obj.status = translate('status', obj.status) + " " + obj.satisfiedx5fon;
+          obj.status = translateCharges('status', obj.status) + " " + obj.satisfiedx5fon;
         } else {
-          obj.status = translate('status', obj.status);
+          obj.status = translateCharges('status', obj.status);
         };
         obj.personsEntitled = obj.personsx5fentitled[0].name;
         obj.particularsDescription = obj.particulars.description;
       };
     } else if (error) {
-      this.testError = "Company Charges Error!";
+      console.log(error.body.message)
     }
   }
 
   //callout to getCompanyInsolvency to obtain data
+  //When there are no insolvency cases, its resuls in an error
   @api insolvencyData = []
   @api insolvencyName;
   @api insolvencyDates = [];
+  @api hideInsolvencyTab;
+  @api insolvencyCount;
+  @api insolvencyTabName;
   @wire(getCompanyInsolvency, {compNumber: '$cNum'})
   wiredInsolvency({error, data}) {
     if (data) {
       //console.log(data);
       this.insolvencyData = JSON.parse(data).cases;
-      console.log(JSON.stringify(insolvencyData))
+      this.insolvencycount = this.insolvencyData.length;
+      this.insolvencyTabName = "Insolvency (" + this.insolvencycount + ")";
       for (const obj of this.insolvencyData){
-        obj.insolvencyName = "Case Number " + obj.z0number + " - " + translate('insolvency_case_type', obj.z0type);
+        obj.insolvencyName = "Case Number " + obj.z0number + " - " + translateCompany('insolvency_case_type', obj.z0type);
         for (const obj2 of obj.practitioners){
           if (obj2.address.addressx5flinex5f1 !== null) {
             obj2.practitionerAddress = obj2.address.addressx5flinex5f1
@@ -695,13 +772,12 @@ export default class CompaniesHouse extends LightningElement {
                     }
         }
         for (const obj3 of obj.dates) {
-          obj3.z0type = translate('insolvency_case_date_type', obj3.z0type);
+          obj3.z0type = translateCompany('insolvency_case_date_type', obj3.z0type);
         }
       }
-      console.log(JSON.stringify(insolvencyData));
     } else if (error) {
-      this.testError = "Insolvency Error!";
-      console.log('Insolvency Error!')
+      this.hideInsolvencyTab = true;
+      console.log(error.body.message);
     }
   }
   
