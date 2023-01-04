@@ -1,5 +1,6 @@
 <template>
   
+  <!-- these first 2 sections represent Resource Not Found (error 404) and Unauthorized (error 401) -->
   <div if:false={successCHNumber}>
     <article class="slds-card slds-card_boundary">
       <div class="slds-card__header">
@@ -35,6 +36,7 @@
     </article>
   </div>
   
+  <!-- Card Header-->
   <div if:true={successCHNumber}>
     <article class="slds-card slds-card_boundary spacingCard">
       <div class="slds-card__header">
@@ -57,15 +59,17 @@
         </header>
       </div>
 
-      
+      <!--Card Body-->
       <div class="slds-card__body slds-card__body_inner">
         <lightning-tabset if:true={companyName}>
+          
+          <!--Overview Tab-->
           <lightning-tab label="Overview">
-
             <div class="c-container">
               <lightning-layout multiple-rows="true">
                 <lightning-layout-item size="12">
                   
+                  <!--Details Section-->
                   <lightning-layout>
                     <lightning-layout-item size="4">
                       <div class="slds-text-heading_small"><strong>Details</strong></div>
@@ -95,6 +99,7 @@
                       </div>
                     </lightning-layout-item>
 
+                    <!--Accounts Section-->
                     <lightning-layout-item if:true={accounts} size="4">
                       <div class="slds-text-heading_small"><strong>Accounts </strong>
                         <lightning-icon if:false={accountsOverdue} icon-name="utility:success" alternative-text="Not Overdue" variant="success" title="Not Overdue" size="xx-small"></lightning-icon>
@@ -111,6 +116,7 @@
                       </div>
                     </lightning-layout-item>
 
+                    <!--Confirmation Statement Section-->
                     <lightning-layout-item if:true={confirmationStatement} size="4">
                       <div class="slds-text-heading_small"><strong>Confirmation Statement </strong>
                           <lightning-icon if:false={statementsOverdue} icon-name="utility:success" alternative-text="Not Overdue" variant="success" title="Not Overdue" size="xx-small"></lightning-icon>
@@ -128,7 +134,7 @@
                     </lightning-layout-item>
                   </lightning-layout>
 
-
+                  <!--SIC Codes Section-->
                   <lightning-layout>
                     <lightning-layout-item size="12">
                       <div if:true={sicCodes}>
@@ -143,7 +149,8 @@
                       </div>
                     </lightning-layout-item>
                   </lightning-layout>
-                    
+                  
+                  <!--Previous Names Section-->
                   <lightning-layout if:true={previosNamesData} class="slds-m-top_xx-small">
                     <lightning-layout-item size="12">
                       <strong>Previous Company Names:</strong><br>
@@ -157,12 +164,14 @@
                     </lightning-layout-item>
                   </lightning-layout>
 
+                  <!--Foreign Company Section Header-->
                   <lightning-layout if:true={foreignCompany} class="slds-m-top_x-small">
                     <lightning-layout-item size="12">
                       <div class="slds-text-heading_small"><strong>Foreign Company Details</strong></div>
                     </lightning-layout-item>
                   </lightning-layout>
 
+                  <!--Foreign Company Section Details-->
                   <lightning-layout if:true={foreignCompany}>
                     <lightning-layout-item size="4">
                       <div if:true={incorporatedIn}>
@@ -188,19 +197,30 @@
                       </div>
                     </lightning-layout-item>
 
+                    <!--Foreign Company Section Account Informtaion-->
                     <lightning-layout-item size="8">
-                      <strong>Account Filing:</strong> Required to publish accounts from {accountPeriodFromMonth} {accountPeriodFromDay} to {accountPeriodToMonth} {accountPeriodToDay} within {mustFilewithin} months under parent law <br>
-                      <strong>Terms of Account Publication: </strong> {termsOfAccountPublication} <br>
-                      <strong>Foreign Account Type: </strong> {foreignAccountType} <br>
+                      <div if:true={accountPeriodFromMonth}>
+                        <strong>Account Filing:</strong> Required to publish accounts from {accountPeriodFromMonth} {accountPeriodFromDay} to {accountPeriodToMonth} {accountPeriodToDay} within {mustFilewithin} months under parent law <br>
+                      </div>
+                      <div if:true={termsOfAccountPublication}>
+                        <strong>Terms of Account Publication: </strong> {termsOfAccountPublication} <br>
+                      </div>
+                      <div if:true={foreignAccountType}>
+                        <strong>Foreign Account Type: </strong> {foreignAccountType} <br>
+                      </div>
                     </lightning-layout-item>
+
                   </lightning-layout>
                 </lightning-layout-item>
               </lightning-layout>
             </div>
           </lightning-tab>
 
+          <!--Filing History Tab-->
           <template if:false={filingHideTab}>
             <lightning-tab label={filingTabName}>
+
+              <!--Filing History Filters-->
               <div class="slds-p-bottom_x-small">
                 <div class="slds-clearfix">
                   <div class="slds-float_left">
@@ -223,6 +243,8 @@
                   </lightning-combobox>
                 </div> 
               </div>
+
+              <!--Filing History Table-->
               <div>
                 <lightning-datatable 
                   key-field = "id" 
@@ -257,10 +279,13 @@
             </lightning-tab>
           </template>
 
+          <!--Officers Tab-->
           <template if:false={officerHideTab}>
             <lightning-tab label={officerTabName}>
                 <div>
                   <div if:false={showOfficerCard}>
+                    
+                    <!--Officers Filters-->
                     <div class="slds-p-bottom_xxx-small">
                       <div class="slds-clearfix">
                         <div class="slds-float_left">
@@ -270,7 +295,7 @@
                                 class="slds-form-element__label" 
                                 for="Active Officers"
                                 if:false={showOfficerCard}>
-                                  Active Officers
+                                  Officer Status
                               </label>
                                 <lightning-input   
                                   type="toggle" 
@@ -291,14 +316,16 @@
                             options={officersFilter}
                             value="10"
                             onchange={handleOfficerFilterChange}
-                            class="slds-float_left">
+                            class="slds-float_left slds-p-right_medium">
                           </lightning-combobox>
-                          <div class="slds-float_right slds-has-bottom-magnet">
-                            Active Count: {officerActiveCount} <br>
-                            Resigned Count: {officerResignedCount}
+                          <div class = "slds-p-top_xx-small">
+                            Total Officers: {officerTotalCount} <br>
+                            {officerActiveCount} Active / {officerResignedCount} Resigned
                           </div>
                       </div>
                     </div>
+
+                    <!--Officers Table-->
                     <lightning-datatable 
                         key-field = "id"
                         if:true={showOfficerFiltered}
@@ -350,6 +377,8 @@
                         </div>
                       </div>
                   </div>
+
+                  <!--Officers Card-->
                   <div if:true={showOfficerCard}>
                     <lightning-button    
                         variant="neutral"
@@ -391,6 +420,7 @@
             </lightning-tab>
           </template>
 
+          <!--PSC Tab-->
           <template if:false={pscHideTab}>
             <lightning-tab label={pscTabName}>
               <template for:each={pscData} for:item="psc">
@@ -405,7 +435,6 @@
                     <strong> PSC Kind: </strong> {psc.kind} <br>
                     <strong> Is Sanctioned: </strong> {psc.isx5fsanctioned} <br>
                   </div>
-
                   <div if:true={psc.identification} class="slds-p-horizontal_small">
                     <strong> Registration Number: </strong> {psc.identification.registrationx5fnumber} <br>
                     <strong> Place Registered: </strong> {psc.identification.placex5fregistered} <br>
@@ -425,6 +454,7 @@
             </lightning-tab>
           </template>
 
+          <!--UK Establishments Tab-->
           <template if:false={hideukEstablishmentsTab}>
             <lightning-tab label={ukEstablishmentsTabName}>
               <lightning-datatable 
@@ -436,22 +466,44 @@
             </lightning-tab>
           </template>
 
+          <!--Charges Tab-->
           <template if:false={chargesHideTab}>
             <lightning-tab label={chargesTabName}>
               <div if:false={showChargeCard}>
-                Total Charges: {totalCharges}  <br>
-                {satisfiedCharges} Satisfied / {partiallySatisfiedCharges} Partially Satisfied
-              </div>
-              <lightning-input   
-                type="toggle" 
-                label="Outstanding/Partially Satisfied"
-                message-toggle-active="Outstanding Only"
-                message-toggle-inactive="All Charges"
-                if:false={showChargeCard}
-                onchange={toggleCharges}
-                name="Charges">
-              </lightning-input>
-              <div if:false={showChargesFiltered}>
+
+                <!--Charges Filters-->
+                <div class="slds-p-bottom_xxx-small">
+                  <div class="slds-clearfix">
+                    <div class="slds-float_left">
+                      <div class="slds-form slds-form_stacked">
+                        <div class="slds-form-element">
+                          <label 
+                            class="slds-form-element__label" 
+                            for="Charges">
+                              Charge Status
+                          </label>
+                          <lightning-input   
+                            type="toggle" 
+                            label="Outstanding/Partially Satisfied"
+                            message-toggle-active="Unsatisfied Charges"
+                            message-toggle-inactive="All Charges"
+                            if:false={showChargeCard}
+                            onchange={toggleCharges}
+                            variant="label-hidden"
+                            name="Charges"
+                            class="slds-p-right_x-small">
+                          </lightning-input>
+                        </div>
+                      </div>
+                    </div>
+                    <div class = "slds-p-top_xx-small">
+                      Total Charges: {totalCharges}  <br>
+                      {satisfiedCharges} Satisfied / {partiallySatisfiedCharges} Partial / {outstandingCharges} Outstanding
+                    </div>
+                  </div>
+                </div>
+
+                <!--Charges Table-->
                 <lightning-datatable 
                   key-field = "id"
                   data={chargesData} 
@@ -461,18 +513,22 @@
                   if:false={showChargeCard}
                   hide-checkbox-column>
                 </lightning-datatable>
+              
+                <!--Charges Filtered Table-->
+                <div if:true={showChargesFiltered}>
+                  <lightning-datatable 
+                    key-field = "id"
+                    data={filteredChargesData} 
+                    columns={chargesColumns}
+                    column-widths-mode="auto"
+                    onrowaction={showChargeDetails}
+                    if:false={showChargeCard}
+                    hide-checkbox-column>
+                  </lightning-datatable>
+                </div>
               </div>
-              <div if:true={showChargesFiltered}>
-                <lightning-datatable 
-                  key-field = "id"
-                  data={filteredChargesData} 
-                  columns={chargesColumns}
-                  column-widths-mode="auto"
-                  onrowaction={showChargeDetails}
-                  if:false={showChargeCard}
-                  hide-checkbox-column>
-                </lightning-datatable>
-              </div>
+
+              <!--Charges Details Button-->
               <lightning-button
                 if:true={showChargeCard}
                 variant="neutral"
@@ -482,47 +538,47 @@
                 icon-position="left"
                 onclick={backChargeTable}>
               </lightning-button>
+
+              <!--Charges Details Card-->
               <lightning-card  title={chargeClassificationDescription} if:true={showChargeCard}>
-                <lightning-button 
-                  label="Sync Charge">
-                </lightning-button>
-                  <div class="slds-p-horizontal_small">
-                    <strong>Acquired On: </strong> {chargeAcquiredOn} <br>
-                    <strong>Charge Code: </strong> {chargeCode} <br>
-                    <strong>Charge Status: </strong> {chargeStatus} <br>
-                    <strong>Charge Delivered On: </strong> {chargeDeliveredOn} <br>
-                    <strong>Charge Created On: </strong> {chargeCreatedOn} <br>
-                    <strong>Insolvency Cases: </strong> {chargeInsolvencyCases} <br>
-                    <strong>Type: </strong> {chargeParticularsType} <br>
-                    <strong>Description: </strong> {chargeParticularsDescription} <br>
-                    <strong>Floating: </strong> {chargeParticularsFloating} <br>
-                    <strong>Fixed: </strong> {chargeParticularsFixed} <br>
-                    <strong>Resolved On: </strong> {chargeResolvedOn} <br>
-                    <strong>Satisfied On: </strong> {chargeSatisfiedOn} <br>
-                    <strong>Scottish Alterations: </strong> {chargeScottinhAlterations} <br>
-                    <strong>Secured Type: </strong> {chargeSecuredtype} <br>
-                    <strong>Secured Description: </strong> {chargeSecuredDescription} <br>
-                    <strong>Persons Entitled: </strong>
-                    <ul>
-                      <template for:each={chargePersonsEntitled} for:item="person">
-                        <li key={person.Id}>
-                            {person.name}
-                        </li>
-                      </template>
-                    </ul> 
-                  </div>
-                  <lightning-datatable 
-                    key-field = "id"
-                    data={transactionsData} 
-                    columns={transactionsColumns}
-                    column-widths-mode="auto"
-                    if:true={showChargeCard}
-                    hide-checkbox-column>
-                  </lightning-datatable>
+                <div class="slds-p-horizontal_small">
+                  <strong>Acquired On: </strong> {chargeAcquiredOn} <br>
+                  <strong>Charge Code: </strong> {chargeCode} <br>
+                  <strong>Charge Status: </strong> {chargeStatus} <br>
+                  <strong>Charge Delivered On: </strong> {chargeDeliveredOn} <br>
+                  <strong>Charge Created On: </strong> {chargeCreatedOn} <br>
+                  <strong>Insolvency Cases: </strong> {chargeInsolvencyCases} <br>
+                  <strong>Type: </strong> {chargeParticularsType} <br>
+                  <strong>Description: </strong> {chargeParticularsDescription} <br>
+                  <strong>Floating: </strong> {chargeParticularsFloating} <br>
+                  <strong>Fixed: </strong> {chargeParticularsFixed} <br>
+                  <strong>Resolved On: </strong> {chargeResolvedOn} <br>
+                  <strong>Satisfied On: </strong> {chargeSatisfiedOn} <br>
+                  <strong>Scottish Alterations: </strong> {chargeScottinhAlterations} <br>
+                  <strong>Secured Type: </strong> {chargeSecuredtype} <br>
+                  <strong>Secured Description: </strong> {chargeSecuredDescription} <br>
+                  <strong>Persons Entitled: </strong>
+                  <ul>
+                    <template for:each={chargePersonsEntitled} for:item="person">
+                      <li key={person.Id}>
+                          {person.name}
+                      </li>
+                    </template>
+                  </ul> 
+                </div>
+                <lightning-datatable 
+                  key-field = "id"
+                  data={transactionsData} 
+                  columns={transactionsColumns}
+                  column-widths-mode="auto"
+                  if:true={showChargeCard}
+                  hide-checkbox-column>
+                </lightning-datatable>
               </lightning-card>
             </lightning-tab>
           </template>
 
+          <!--Insolvency Tab-->
           <template if:false={hideInsolvencyTab}>
             <lightning-tab label={insolvencyTabName}>
               <template for:each={insolvencyData} for:item="insolvencyCase">

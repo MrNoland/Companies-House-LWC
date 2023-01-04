@@ -8,9 +8,12 @@ const filingsTranslationTable1 = {
         "address" : "Address",
         "auditors" : "Auditors", //this one is really old (pre-2005)
         "annual-return" : "Annual Return",
-        "capital" : "capital",
+        "capital" : "Capital",
         "change-of-name" : "Change of Name",
+        "change-of-constitution" : "Change of Constitution",
+        "dissolution" : "Dissolution",
         "incorporation" : "Incorporation",
+        "insolvency" : "Insolvency",
         "liquidation" : "Liquidation",
         "miscellaneous" : "Miscellaneous",
         "mortgage" : "Mortgage",
