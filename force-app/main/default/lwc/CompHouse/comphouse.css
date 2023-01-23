@@ -1,9 +1,8 @@
-
 .slds-badge {
-    font-size: var(--slds-c-badge-font-size, .70rem);
-  }
+  font-size: var(--slds-c-badge-font-size, 0.7rem);
+}
 
-.customIcon{
+.customIcon {
   width: 35px;
   height: 35px;
   margin: 6px;
