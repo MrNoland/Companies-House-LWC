@@ -1,5 +1,4 @@
 public with sharing class retrieveFieldValue {
-  //Need to figure out how to pass field API into return string
   @AuraEnabled(cacheable=true)
   public static String retrieveFieldValue(id recordId, String fieldAPI) {
     String objectName = recordId.getSObjectType().getDescribe().getName();
@@ -9,9 +8,11 @@ public with sharing class retrieveFieldValue {
       ' from ' +
       objectName +
       ' where id = :recordID';
+
+    //need to figure out how to make this agnostic of the Account object
     list<Account> recordSearch = Database.query(searchStr);
-    //How can we refernece the fieldAPI in the parameter instead of hardcoding this API name?
-    String compNumber = recordSearch[0].Companies_House_Number__c;
+    String compNumber = String.valueOf(recordSearch[0].get(fieldAPI));
+    System.debug(compNumber);
     return compNumber;
   }
 }

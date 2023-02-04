@@ -2,9 +2,6 @@
 global class compHouseCalloutMock implements HttpCalloutMock {
   Integer responseCode;
 
-  public class compHouseCalloutException extends Exception {
-  }
-  
   public compHouseCalloutMock(Integer responseCode) {
     this.responseCode = responseCode;
   }
@@ -17,25 +14,23 @@ global class compHouseCalloutMock implements HttpCalloutMock {
       response.setHeader('Content-Type', 'application/json');
       response.setBody('{"example":"test"}');
       response.setStatusCode(200);
+
+    } else if (this.responseCode == 400) {
+      response.setStatusCode(400);
+      response.setStatus('400: Bad request - see error log');
+
     } else if (this.responseCode == 404) {
-      System.debug('entered 404 path');
       response.setStatusCode(404);
       response.setStatus('404: Company not found');
-      //throw new compHouseCalloutException('404: Company not found');
-    }
-      else if (this.responseCode == 401) {
-      System.debug('entered 401 path');
+
+    } else if (this.responseCode == 401) {
       response.setStatusCode(401);
       response.setStatus('401: Unauthorized API Key');
-      //throw new compHouseCalloutException('404: Company not found');
-    }
-      else{
-          System.debug('entered path');
+      
+    } else {
       response.setStatusCode(this.responseCode);
-      response.setStatus('Unknown error;');
-      //throw new compHouseCalloutException('404: Company not found');
-      }
-    System.debug(response);
+      response.setStatus('Unknown error:');
+    }
     return response;
   }
 }

@@ -31,8 +31,10 @@ export default class CompaniesHouse extends LightningElement {
   wiredCompanyNumber({ error, data }) {
     if (data) {
       this.cNum = data;
+      console.log(this.cNum);
     } else if (error) {
       this.testError = "Error!";
+      console.log("error fetching company number");
     }
   }
 
@@ -106,7 +108,7 @@ export default class CompaniesHouse extends LightningElement {
   @wire(getCompanyInfo, { compNumber: "$cNum" })
   wiredCompany({ error, data }) {
     if (data) {
-      //console.log(data);
+      console.log(data);
       this.successCHNumber = true;
       this.companyInfo = JSON.parse(data);
       this.companyURL =

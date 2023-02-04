@@ -12,11 +12,12 @@
     <targetConfigs>
         <targetConfig targets="lightning__RecordPage">
             <property
-        name="companiesHouseNumber"
-        label="Companies House Number Field API"
-        type="String"
-        description="Insert the API name of the field representing the Companies House Number."
-      />
+              name="companiesHouseNumber"
+              label="Companies House Number Field API"
+              required = "true"
+              type="String"
+              description="Insert the API name of the field representing the Companies House Number."
+            />
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>
