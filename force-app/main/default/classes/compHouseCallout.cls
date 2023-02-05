@@ -4,6 +4,118 @@ public class compHouseCallout {
   }
 
   @AuraEnabled(cacheable=true)
+  public static String searchAll(
+    String query,
+    integer itemsPerPage,
+    integer startIndex
+  ) {
+    ExternalService.CompaniesHouse service = new ExternalService.CompaniesHouse();
+    ExternalService.CompaniesHouse.searchAll_Request req = new ExternalService.CompaniesHouse.searchAll_Request();
+    req.q = query;
+    req.itemsx5fperx5fpage = itemsPerPage;
+    req.startx5findex = startIndex;
+    try {
+      ExternalService.CompaniesHouse.searchAll_Response res = service.searchAll(
+        req
+      );
+      //System.Debug(JSON.serialize(res.Code200));
+      return JSON.serialize(res.Code200);
+    } catch (ExternalService.CompaniesHouse.searchAll_ResponseException exc) {
+      if (exc.ResponseCode == 401) {
+        throw new compHouseCalloutException('401: Unauthorized API Key');
+      } else {
+        throw new compHouseCalloutException(
+          'Unknown error; ' + exc.ResponseCode + ': ' + exc.DefaultResponse
+        );
+      }
+    }
+  }
+
+  @AuraEnabled(cacheable=true)
+  public static String searchCompany(
+    String query,
+    integer itemsPerPage,
+    integer startIndex
+  ) {
+    ExternalService.CompaniesHouse service = new ExternalService.CompaniesHouse();
+    ExternalService.CompaniesHouse.searchCompany_Request req = new ExternalService.CompaniesHouse.searchCompany_Request();
+    req.q = query;
+    req.itemsx5fperx5fpage = itemsPerPage;
+    req.startx5findex = startIndex;
+    try {
+      ExternalService.CompaniesHouse.searchCompany_Response res = service.searchCompany(
+        req
+      );
+      //System.Debug(JSON.serialize(res.Code200));
+      return JSON.serialize(res.Code200);
+    } catch (ExternalService.CompaniesHouse.searchCompany_ResponseException exc) {
+      if (exc.ResponseCode == 401) {
+        throw new compHouseCalloutException('401: Unauthorized API Key');
+      } else {
+        throw new compHouseCalloutException(
+          'Unknown error; ' + exc.ResponseCode + ': ' + exc.DefaultResponse
+        );
+      }
+    }
+  }
+
+  @AuraEnabled(cacheable=true)
+  public static String searchOfficers(
+    String query,
+    integer itemsPerPage,
+    integer startIndex
+  ) {
+    ExternalService.CompaniesHouse service = new ExternalService.CompaniesHouse();
+    ExternalService.CompaniesHouse.searchOfficers_Request req = new ExternalService.CompaniesHouse.searchOfficers_Request();
+    req.q = query;
+    req.itemsx5fperx5fpage = itemsPerPage;
+    req.startx5findex = startIndex;
+    try {
+      ExternalService.CompaniesHouse.searchOfficers_Response res = service.searchOfficers(
+        req
+      );
+      //System.Debug(JSON.serialize(res.Code200));
+      return JSON.serialize(res.Code200);
+    } catch (ExternalService.CompaniesHouse.searchOfficers_ResponseException exc) {
+      if (exc.ResponseCode == 401) {
+        throw new compHouseCalloutException('401: Unauthorized API Key');
+      } else {
+        throw new compHouseCalloutException(
+          'Unknown error; ' + exc.ResponseCode + ': ' + exc.DefaultResponse
+        );
+      }
+    }
+  }
+
+  @AuraEnabled(cacheable=true)
+  public static String searchDisqualifiedOfficers(
+    String query,
+    integer itemsPerPage,
+    integer startIndex
+  ) {
+    ExternalService.CompaniesHouse service = new ExternalService.CompaniesHouse();
+    ExternalService.CompaniesHouse.searchDisqualifiedOfficers_Request req = new ExternalService.CompaniesHouse.searchDisqualifiedOfficers_Request();
+    req.q = query;
+    req.itemsx5fperx5fpage = itemsPerPage;
+    req.startx5findex = startIndex;
+    try {
+      ExternalService.CompaniesHouse.searchDisqualifiedOfficers_Response res = service.searchDisqualifiedOfficers(
+        req
+      );
+      //System.Debug(JSON.serialize(res.Code200));
+      return JSON.serialize(res.Code200);
+    } catch (ExternalService.CompaniesHouse.searchDisqualifiedOfficers_ResponseException exc) {
+      if (exc.ResponseCode == 401) {
+        throw new compHouseCalloutException('401: Unauthorized API Key');
+      } else {
+        throw new compHouseCalloutException(
+          'Unknown error; ' + exc.ResponseCode + ': ' + exc.DefaultResponse
+        );
+      }
+    }
+  }
+
+  @AuraEnabled(cacheable=true)
   public static String getCompanyInfo(String compNumber) {
     ExternalService.CompaniesHouse service = new ExternalService.CompaniesHouse();
     ExternalService.CompaniesHouse.getCompanyByNumber_Request req = new ExternalService.CompaniesHouse.getCompanyByNumber_Request();

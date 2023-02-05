@@ -4,6 +4,10 @@ public class compHouseCalloutTest {
   static void test_compHouseCallout_success() {
     Test.setMock(HttpCalloutMock.class, new compHouseCalloutMock(200));
     compHouseCallout.getCompanyInfo('1234');
+    compHouseCallout.searchAll('company', 25, 0);
+    compHouseCallout.searchCompany('company', 25, 0);
+    compHouseCallout.searchOfficers('officer', 25, 0);
+    compHouseCallout.searchDisqualifiedOfficers('officer', 25, 0);
     List<String> category = new List<String>{ 'financials' };
     compHouseCallout.getFilingHistory('12345678', category, 25, 0);
     compHouseCallout.getOfficerAppointments('1234567890987654');
@@ -70,6 +74,46 @@ public class compHouseCalloutTest {
     Test.setMock(HttpCalloutMock.class, new compHouseCalloutMock(401));
     try {
       compHouseCallout.getCompanyInfo('12345678');
+    } catch (Exception e) {
+      System.assert(e.getMessage() == '401: Unauthorized API Key');
+    }
+  }
+
+  @isTest
+  static void test_searchAll_401() {
+    Test.setMock(HttpCalloutMock.class, new compHouseCalloutMock(401));
+    try {
+      compHouseCallout.searchAll('company', 25, 0);
+    } catch (Exception e) {
+      System.assert(e.getMessage() == '401: Unauthorized API Key');
+    }
+  }
+
+  @isTest
+  static void test_searchCompany_401() {
+    Test.setMock(HttpCalloutMock.class, new compHouseCalloutMock(401));
+    try {
+      compHouseCallout.searchCompany('company', 25, 0);
+    } catch (Exception e) {
+      System.assert(e.getMessage() == '401: Unauthorized API Key');
+    }
+  }
+
+  @isTest
+  static void test_searchOfficers_401() {
+    Test.setMock(HttpCalloutMock.class, new compHouseCalloutMock(401));
+    try {
+      compHouseCallout.searchOfficers('officer', 25, 0);
+    } catch (Exception e) {
+      System.assert(e.getMessage() == '401: Unauthorized API Key');
+    }
+  }
+
+  @isTest
+  static void test_searchDisqualifiedOfficers_401() {
+    Test.setMock(HttpCalloutMock.class, new compHouseCalloutMock(401));
+    try {
+      compHouseCallout.searchDisqualifiedOfficers('officer', 25, 0);
     } catch (Exception e) {
       System.assert(e.getMessage() == '401: Unauthorized API Key');
     }
@@ -171,6 +215,42 @@ public class compHouseCalloutTest {
     Test.setMock(HttpCalloutMock.class, new compHouseCalloutMock(500));
     try {
       compHouseCallout.getCompanyInfo('12345678');
+    } catch (Exception e) {
+    }
+  }
+
+  @isTest
+  static void test_searchAll_500() {
+    Test.setMock(HttpCalloutMock.class, new compHouseCalloutMock(500));
+    try {
+      compHouseCallout.searchAll('company', 25, 0);
+    } catch (Exception e) {
+    }
+  }
+
+  @isTest
+  static void test_searchCompany_500() {
+    Test.setMock(HttpCalloutMock.class, new compHouseCalloutMock(500));
+    try {
+      compHouseCallout.searchCompany('company', 25, 0);
+    } catch (Exception e) {
+    }
+  }
+
+  @isTest
+  static void test_searchOfficers_500() {
+    Test.setMock(HttpCalloutMock.class, new compHouseCalloutMock(500));
+    try {
+      compHouseCallout.searchOfficers('officer', 25, 0);
+    } catch (Exception e) {
+    }
+  }
+
+  @isTest
+  static void test_searchDisqualifiedOfficers_500() {
+    Test.setMock(HttpCalloutMock.class, new compHouseCalloutMock(500));
+    try {
+      compHouseCallout.searchDisqualifiedOfficers('officer', 25, 0);
     } catch (Exception e) {
     }
   }

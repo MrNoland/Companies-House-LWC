@@ -5,7 +5,7 @@ import translatePSC from "./translations_psc";
 import translateCharges from "./translations_charges";
 import translateFilings1 from "./translations_filings1";
 import translateFilings2 from "./translations_filings2";
-import retrieveFieldValue from "@salesforce/apex/retrieveFieldValue.retrieveFieldValue";
+//import retrieveFieldValue from "@salesforce/apex/retrieveFieldValue.retrieveFieldValue";
 import getCompanyInfo from "@salesforce/apex/compHouseCallout.getCompanyInfo";
 import getFilingHistory from "@salesforce/apex/compHouseCallout.getFilingHistory";
 import getCompanyOfficersList from "@salesforce/apex/compHouseCallout.getCompanyOfficersList";
@@ -19,11 +19,15 @@ import CH_Icon from "@salesforce/resourceUrl/CH_Logo";
 export default class CompaniesHouse extends LightningElement {
   //Set Logo to variable
   CH_Icon = CH_Icon;
+  
+  //Pull in Component Config value
+  @api cNum;
+
 
   //Obtain the Company Number that is stored in the field noted on the Lightning Component
-  @api companiesHouseNumber;
+  /*@api companiesHouseNumber;
   @api recordId;
-  @track cNum;
+  @api cNum;
   @wire(retrieveFieldValue, {
     recordId: "$recordId",
     fieldAPI: "$companiesHouseNumber"
@@ -36,7 +40,7 @@ export default class CompaniesHouse extends LightningElement {
       this.testError = "Error!";
       console.log("error fetching company number");
     }
-  }
+  }*/
 
   //Set company info field variables
   @api unauthorizedApiKey;
@@ -108,7 +112,7 @@ export default class CompaniesHouse extends LightningElement {
   @wire(getCompanyInfo, { compNumber: "$cNum" })
   wiredCompany({ error, data }) {
     if (data) {
-      console.log(data);
+      //console.log(data);
       this.successCHNumber = true;
       this.companyInfo = JSON.parse(data);
       this.companyURL =
@@ -1068,7 +1072,7 @@ export default class CompaniesHouse extends LightningElement {
   @wire(getCompanyChargesList, { compNumber: "$cNum" })
   wiredCompanyCharges({ error, data }) {
     if (data) {
-      console.log(data);
+      //console.log(data);
       this.totalCharges = JSON.parse(data).unfilteredx5fcount;
       if (this.totalCharges === 0) {
         this.chargesHideTab = true;

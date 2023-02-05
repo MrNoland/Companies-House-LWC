@@ -3,20 +3,20 @@
     <!-- The apiVersion may need to be increased for the current release -->
     <apiVersion>53.0</apiVersion>
     <isExposed>true</isExposed>
-    <masterLabel>Companies House</masterLabel>
+    <masterLabel>Companies House Company Card</masterLabel>
     <description
   >This component is used to view the Companies House details of a particular company</description>
     <targets>
-        <target>lightning__RecordPage</target>
+      <target>lightning__FlowScreen</target>
     </targets>
     <targetConfigs>
-        <targetConfig targets="lightning__RecordPage">
+        <targetConfig targets="lightning__FlowScreen">
             <property
-              name="companiesHouseNumber"
-              label="Companies House Number Field API"
+              name="cNum"
+              label="Companies House Number"
               required = "true"
               type="String"
-              description="Insert the API name of the field representing the Companies House Number."
+              description="Companies House Number"
             />
         </targetConfig>
     </targetConfigs>

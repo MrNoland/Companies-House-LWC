@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>56.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>Companies House Search Company Results</masterLabel>
+    <description
+  >This component is used to view search results of a company name</description>
+    <targets>
+      <target>lightning__RecordPage</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__RecordPage">
+            <property
+              name="searchquery"
+              label="Company Search Query"
+              required = "true"
+              type="String"
+              description="The company name or number to search"
+            />
+            <property
+              name="itemsperpage"
+              label="Items per Page"
+              required = "false"
+              type="String"
+              description="Set to determine the items per page returned in the search results. Leaving blank results in 25 results"
+            />
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>
