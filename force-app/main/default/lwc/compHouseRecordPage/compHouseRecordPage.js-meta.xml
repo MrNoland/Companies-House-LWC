@@ -12,7 +12,7 @@
         <targetConfig targets="lightning__RecordPage">
           <property
               name="searchFieldAPI"
-              label="Search Field API"
+              label="Search Field API Name"
               required = "true"
               type="String"
               default="Name"
@@ -20,11 +20,19 @@
             />  
           <property
               name="companiesHouseNumberAPI"
-              label="Companies House Number API"
+              label="Companies House Number Field API Name"
               required = "true"
               type="String"
               default="Companies_House_Number__c"
               description="API name of the Companies House Number field"
+            />
+            <property
+              name="syncFlowAPI"
+              label="Sync Flow API Name"
+              required = "true"
+              type="String"
+              default="Companies_House_Sync_Customer"
+              description="API Name of the Flow used to sync cutsomer details from the companies house"
             />
         </targetConfig>
     </targetConfigs>

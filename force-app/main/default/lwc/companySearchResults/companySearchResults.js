@@ -5,6 +5,7 @@ import myModal from 'c/baseLightningModal';
 
 export default class CompanySearchResults extends LightningElement {
 
+    @api syncFlowAPI;
     @api searchColumns = [
         { label: "Sync", fieldname: "sync", type: "button" , typeAttributes: { label: "Sync" }},
         { label: "Name", fieldName: "title" },
@@ -31,7 +32,7 @@ export default class CompanySearchResults extends LightningElement {
     const result = await myModal.open({
         size: 'small',
         description: 'Accessible description of modal\'s purpose',
-        content: 'howdy duty',
+        flowAPI: this.syncFlowAPI,
     });
     console.log(result);
   }

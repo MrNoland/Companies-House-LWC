@@ -9,7 +9,8 @@ export default class CompHouseRecordPage extends LightningElement {
   @api companiesHouseNumberAPI;
   @api recordId;
   @api compNumber;
-  @api searchQuery
+  @api searchQuery;
+  @api syncFlowAPI;
 
   @wire(retrieveFieldValue, {
     recordId: "$recordId",
