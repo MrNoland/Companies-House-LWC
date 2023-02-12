@@ -14,19 +14,15 @@ global class compHouseCalloutMock implements HttpCalloutMock {
       response.setHeader('Content-Type', 'application/json');
       response.setBody('{"example":"test"}');
       response.setStatusCode(200);
-
     } else if (this.responseCode == 400) {
       response.setStatusCode(400);
       response.setStatus('400: Bad request - see error log');
-
     } else if (this.responseCode == 404) {
       response.setStatusCode(404);
       response.setStatus('404: Company not found');
-
     } else if (this.responseCode == 401) {
       response.setStatusCode(401);
       response.setStatus('401: Unauthorized API Key');
-      
     } else {
       response.setStatusCode(this.responseCode);
       response.setStatus('Unknown error:');

@@ -22,25 +22,7 @@ export default class CompaniesHouse extends LightningElement {
   
   //Pull in Component Config value
   @api cNum;
-
-
-  //Obtain the Company Number that is stored in the field noted on the Lightning Component
-  /*@api companiesHouseNumber;
-  @api recordId;
-  @api cNum;
-  @wire(retrieveFieldValue, {
-    recordId: "$recordId",
-    fieldAPI: "$companiesHouseNumber"
-  })
-  wiredCompanyNumber({ error, data }) {
-    if (data) {
-      this.cNum = data;
-      console.log(this.cNum);
-    } else if (error) {
-      this.testError = "Error!";
-      console.log("error fetching company number");
-    }
-  }*/
+  @api searchQuery;
 
   //Set company info field variables
   @api unauthorizedApiKey;
