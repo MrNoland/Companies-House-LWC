@@ -11,6 +11,8 @@ export default class CompHouseRecordPage extends LightningElement {
   @api compNumber;
   @api searchQuery;
   @api syncFlowAPI;
+  @api hideSyncTab;
+  @api bannerColor;
 
   @wire(retrieveFieldValue, {
     recordId: "$recordId",

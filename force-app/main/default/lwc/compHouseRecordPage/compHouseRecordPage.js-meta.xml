@@ -11,14 +11,6 @@
     <targetConfigs>
         <targetConfig targets="lightning__RecordPage">
           <property
-              name="searchFieldAPI"
-              label="Search Field API Name"
-              required = "true"
-              type="String"
-              default="Name"
-              description="API name of the field to searh in Companies House (For example, type 'name' for the Account Name or 'company' for the Lead Company field"
-            />  
-          <property
               name="companiesHouseNumberAPI"
               label="Companies House Number Field API Name"
               required = "true"
@@ -27,13 +19,30 @@
               description="API name of the Companies House Number field"
             />
             <property
+              name="hideSyncTab"
+              label="Hides the Sync tab"
+              required = "false"
+              type="Boolean"
+              default="false"
+              description="Checking this will hide the Sync tab"
+            />
+            <property
+              name="searchFieldAPI"
+              label="Search Field API Name"
+              required = "true"
+              type="String"
+              default="Name"
+              description="API name of the field to searh in Companies House (For example, type 'name' for the Account Name or 'company' for the Lead Company field"
+            />
+            <property
               name="syncFlowAPI"
               label="Sync Flow API Name"
-              required = "true"
+              required = "false"
               type="String"
               default="Companies_House_Sync_Customer"
               description="API Name of the Flow used to sync cutsomer details from the companies house"
             />
+            
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

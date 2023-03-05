@@ -1083,8 +1083,8 @@
             </lightning-tab>
           </template>
 
-          <lightning-tab label="Sync">
-            <c-company-search-results search-query={searchQuery} sync-flow-a-p-i={syncFlowAPI}></c-company-search-results>
+          <lightning-tab label="Sync" if:false={hideSyncTab}>
+            <c-company-search-results search-query={searchQuery} sync-flow-a-p-i={syncFlowAPI} record-id={recordId}></c-company-search-results>
           </lightning-tab>
             
         </lightning-tabset>

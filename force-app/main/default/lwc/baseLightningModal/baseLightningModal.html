@@ -1,5 +1,5 @@
 <template>
-    <lightning-modal-body> 
-        <lightning-flow flow-api-name={flowAPI}></lightning-flow>
+    <lightning-modal-body>
+        <lightning-flow flow-api-name={flowAPI} onstatuschange={handleStatusChange} flow-input-variables={inputVariables}></lightning-flow>
     </lightning-modal-body>
 </template>

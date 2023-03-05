@@ -1,14 +1,20 @@
 <!-- sldsValidatorIgnore -->
 <template>
-    <lightning-datatable
-        key-field="id"
-        data={searchData}
-        columns={searchColumns}
-        column-widths-mode="auto"
-        onrowaction={launchSyncFlow}
-        hide-checkbox-column
-        onclick={openModal}
-        aria-haspopup="modal"
-    >
-    </lightning-datatable>
+    Showing {itemsPerPage} out of {totalResults} search results
+    <div style="height: 400px">
+        <lightning-datatable
+            key-field="id"
+            data={searchData}
+            columns={searchColumns}
+            column-widths-mode="auto"
+            wrap-text-max-lines="2"
+            onrowaction={openModal}
+            hide-checkbox-column
+            aria-haspopup="modal"
+            enable-infinite-loading
+            load-more-offset="1"
+            onloadmore={loadMoreData}
+        >
+        </lightning-datatable>
+    </div>
 </template>

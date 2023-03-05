@@ -24,6 +24,8 @@ export default class CompaniesHouse extends LightningElement {
   @api cNum;
   @api searchQuery;
   @api syncFlowAPI;
+  @api recordId;
+  @api hideSyncTab;
 
   //Set company info field variables
   @api unauthorizedApiKey;
