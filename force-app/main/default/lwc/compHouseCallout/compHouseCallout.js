@@ -22,6 +22,8 @@ export default class CompaniesHouse extends LightningElement {
   
   //Pull in Component Config value
   @api cNum;
+  @api searchFieldAPI;
+  @api companiesHouseNumberAPI;
   @api searchQuery;
   @api syncFlowAPI;
   @api recordId;

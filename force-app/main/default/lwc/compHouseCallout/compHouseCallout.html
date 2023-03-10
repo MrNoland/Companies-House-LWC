@@ -1,13 +1,36 @@
 <!-- sldsValidatorIgnore -->
 <!-- sldsValidatorIgnore -->
 <template>
-  <!-- these first 2 sections represent Resource Not Found (error 404) and Unauthorized (error 401) -->
+  <!-- these first 3 sections represent Missing (Blank) Companies Number, Resource Not Found (error 404), and Unauthorized (error 401) -->
   <div if:false={successCHNumber}>
-    <article class="slds-card slds-card_boundary">
+    <article class="slds-card slds-card_boundary spacingCard">
       <div class="slds-card__header">
         <header class="slds-media slds-media_center">
           <img src={CH_Icon} alt="Companies House Logo" class="customIcon" />
           <span class="slds-media__body">
+            
+            <!--Missing (Blank) Company Number-->
+            <div if:false={cNum}>
+              <div
+                class="slds-notify slds-notify_alert slds-alert_warning"
+                role="alert"
+              >
+                <div class="slds-m-right_small">
+                  <lightning-icon
+                    icon-name="utility:warning"
+                    alternative-text="Warning!"
+                    title="default style"
+                    size="small"
+                  >
+                  </lightning-icon>
+                </div>
+                <h2>
+                  Blank value for assigned Companies House Number field ({companiesHouseNumberAPI}). Please ensure this field is populated
+                </h2>
+              </div>
+            </div>
+
+            <!--Resource Not Found (error 404)-->
             <div if:true={invalidCHNumber}>
               <div
                 class="slds-notify slds-notify_alert slds-alert_warning"
@@ -23,12 +46,13 @@
                   </lightning-icon>
                 </div>
                 <h2>
-                  Invalid Companies House Number ({cNum}). Please ensure the
+                  Invalid Companies House number ({cNum}). Please ensure the
                   correct Companies House number is referenced
                 </h2>
               </div>
             </div>
 
+            <!--Resource Not Found (error 401)-->
             <div if:true={unauthorizedApiKey}>
               <div
                 class="slds-notify slds-notify_alert slds-alert_warning"
@@ -44,7 +68,7 @@
                   </lightning-icon>
                 </div>
                 <h2>
-                  Incorrect or missing Companies House API Key. Please reach out
+                  Incorrect, missing, or invalid Companies House API Key. Please reach out
                   to you administer to update the Companies House Named
                   Credential
                 </h2>
@@ -53,6 +77,15 @@
           </span>
         </header>
       </div>
+
+      <div class="slds-card__body slds-card__body_inner">
+        <lightning-tabset>
+          <lightning-tab label="Sync" if:false={hideSyncTab}>
+            <c-company-search-results search-query={searchQuery} sync-flow-a-p-i={syncFlowAPI} record-id={recordId}></c-company-search-results>
+          </lightning-tab>
+        </lightning-tabset>
+      </div>
+
     </article>
   </div>
 
@@ -100,6 +133,7 @@
       <!--Card Body-->
       <div class="slds-card__body slds-card__body_inner">
         <lightning-tabset if:true={companyName}>
+
           <!--Overview Tab-->
           <lightning-tab label="Overview">
             <div class="c-container">

@@ -5,7 +5,7 @@ import retrieveFieldValue from "@salesforce/apex/retrieveFieldValue.retrieveFiel
 export default class CompHouseRecordPage extends LightningElement {
 
   //Obtain the Company Number that is stored in the field noted on the Lightning Component
-  @api searchFieldAPI
+  @api searchFieldAPI;
   @api companiesHouseNumberAPI;
   @api recordId;
   @api compNumber;

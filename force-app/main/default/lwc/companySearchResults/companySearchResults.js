@@ -68,7 +68,11 @@ export default class CompanySearchResults extends LightningElement {
     if (this.itemsPerPage >= this.totalResults){
       event.target.enableInfiniteLoading = false;
     } else {
-      this.itemsPerPage = this.itemsPerPage + 10;
+      if (this.itemsPerPage + 10 <= this.totalResults) {
+        this.itemsPerPage = this.itemsPerPage + 10;
+      } else {
+        this.itemsPerPage = this.totalResults;
+      }
     }
     event.target.isLoading = false;
   }
