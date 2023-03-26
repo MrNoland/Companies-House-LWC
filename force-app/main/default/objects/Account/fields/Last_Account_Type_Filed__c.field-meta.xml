@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Last_Account_Type_Filed__c</fullName>
+    <description>The type of the last company accounts filed. The is the account type associated with the &quot;Accounts Last Made Up To&quot; date field</description>
+    <externalId>false</externalId>
+    <label>Last Account Type Filed</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>audited-abridged</fullName>
+                <default>false</default>
+                <label>Audited abridged</label>
+            </value>
+            <value>
+                <fullName>audit-exemption-subsidiary</fullName>
+                <default>false</default>
+                <label>Audit Exemption Subsidiary</label>
+            </value>
+            <value>
+                <fullName>available</fullName>
+                <default>false</default>
+                <label>available</label>
+            </value>
+            <value>
+                <fullName>dormant</fullName>
+                <default>false</default>
+                <label>Dormant</label>
+            </value>
+            <value>
+                <fullName>filing-exemption-subsidiary</fullName>
+                <default>false</default>
+                <label>Filing Exemption Subsidiary</label>
+            </value>
+            <value>
+                <fullName>full</fullName>
+                <default>false</default>
+                <label>Full</label>
+            </value>
+            <value>
+                <fullName>group</fullName>
+                <default>false</default>
+                <label>Group</label>
+            </value>
+            <value>
+                <fullName>initial</fullName>
+                <default>false</default>
+                <label>Initial</label>
+            </value>
+            <value>
+                <fullName>interim</fullName>
+                <default>false</default>
+                <label>Interim</label>
+            </value>
+            <value>
+                <fullName>medium</fullName>
+                <default>false</default>
+                <label>Medium</label>
+            </value>
+            <value>
+                <fullName>micro-entity</fullName>
+                <default>false</default>
+                <label>Micro Entity</label>
+            </value>
+            <value>
+                <fullName>no-accounts-type</fullName>
+                <default>false</default>
+                <label>No accounts type available</label>
+            </value>
+            <value>
+                <fullName>partial-exemption</fullName>
+                <default>false</default>
+                <label>Partial Exemption</label>
+            </value>
+            <value>
+                <fullName>small</fullName>
+                <default>false</default>
+                <label>Small</label>
+            </value>
+            <value>
+                <fullName>total-exemption-full</fullName>
+                <default>false</default>
+                <label>Total Exemption Full</label>
+            </value>
+            <value>
+                <fullName>total-exemption-small</fullName>
+                <default>false</default>
+                <label>Total Exemption Small</label>
+            </value>
+            <value>
+                <fullName>unaudited-abridged</fullName>
+                <default>false</default>
+                <label>Unaudited abridged</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

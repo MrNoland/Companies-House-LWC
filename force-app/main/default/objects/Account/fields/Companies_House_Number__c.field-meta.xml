@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Companies_House_Number__c</fullName>
+    <description>The company registration / incorporation number of the company. This is the unique identifies that ties to the Companies House</description>
+    <externalId>true</externalId>
+    <label>Companies House Number</label>
+    <length>8</length>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

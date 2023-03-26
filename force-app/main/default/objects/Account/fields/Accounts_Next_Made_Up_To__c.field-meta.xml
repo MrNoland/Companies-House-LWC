@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Accounts_Next_Made_Up_To__c</fullName>
+    <description>The date the next company accounts should be made up to. See &quot;Next Accounts Due By&quot; for the filing deadline</description>
+    <externalId>false</externalId>
+    <label>Accounts Next Made Up To</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Date</type>
+</CustomField>

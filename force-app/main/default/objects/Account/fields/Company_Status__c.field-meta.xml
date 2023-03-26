@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Company_Status__c</fullName>
+    <description>The company Status registered in the Companies House database</description>
+    <externalId>false</externalId>
+    <label>Company Status</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>active</fullName>
+                <default>false</default>
+                <label>Active</label>
+            </value>
+            <value>
+                <fullName>closed</fullName>
+                <default>false</default>
+                <label>Closed</label>
+            </value>
+            <value>
+                <fullName>converted-closed</fullName>
+                <default>false</default>
+                <label>Converted / Closed</label>
+            </value>
+            <value>
+                <fullName>dissolved</fullName>
+                <default>false</default>
+                <label>Dissolved</label>
+            </value>
+            <value>
+                <fullName>administration</fullName>
+                <default>false</default>
+                <label>In Administration</label>
+            </value>
+            <value>
+                <fullName>insolvency-proceedings</fullName>
+                <default>false</default>
+                <label>Insolvency Proceedings</label>
+            </value>
+            <value>
+                <fullName>liquidation</fullName>
+                <default>false</default>
+                <label>Liquidation</label>
+            </value>
+            <value>
+                <fullName>open</fullName>
+                <default>false</default>
+                <label>Open</label>
+            </value>
+            <value>
+                <fullName>receivership</fullName>
+                <default>false</default>
+                <label>Receivership</label>
+            </value>
+            <value>
+                <fullName>registered</fullName>
+                <default>false</default>
+                <label>Registered</label>
+            </value>
+            <value>
+                <fullName>removed</fullName>
+                <default>false</default>
+                <label>Removed</label>
+            </value>
+            <value>
+                <fullName>voluntary-arrangement</fullName>
+                <default>false</default>
+                <label>Voluntary Arrangement</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

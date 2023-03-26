@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Registered_Office_Address_Is_In_Dispute__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Flag indicating registered office address as been replaced.</description>
+    <externalId>false</externalId>
+    <label>Registered Office Address Is In Dispute?</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Checkbox</type>
+</CustomField>

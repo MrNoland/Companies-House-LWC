@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Confirmation_Statement_Overdue__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Flag indicating if the confirmation statement is overdue</description>
+    <externalId>false</externalId>
+    <label>Confirmation Statement Overdue?</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Checkbox</type>
+</CustomField>

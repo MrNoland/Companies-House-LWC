@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Company_Type__c</fullName>
+    <description>The Company Type registered in the Companies House Database</description>
+    <externalId>false</externalId>
+    <label>Company Type</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>assurance-company</fullName>
+                <default>false</default>
+                <label>Assurance company</label>
+            </value>
+            <value>
+                <fullName>charitable-incorporated-organisation</fullName>
+                <default>false</default>
+                <label>Charitable incorporated organisation</label>
+            </value>
+            <value>
+                <fullName>converted-or-closed</fullName>
+                <default>false</default>
+                <label>Converted / closed</label>
+            </value>
+            <value>
+                <fullName>northern-ireland-other</fullName>
+                <default>false</default>
+                <label>Credit union (Northern Ireland)</label>
+            </value>
+            <value>
+                <fullName>eeig</fullName>
+                <default>false</default>
+                <label>European Economic Interest Grouping Establishment (EEIG)</label>
+            </value>
+            <value>
+                <fullName>european-public-limited-liability-company-se</fullName>
+                <default>false</default>
+                <label>European public limited liability company (SE)</label>
+            </value>
+            <value>
+                <fullName>further-education-or-sixth-form-college-corporation</fullName>
+                <default>false</default>
+                <label>Further education or sixth form college corporation</label>
+            </value>
+            <value>
+                <fullName>industrial-and-provident-society</fullName>
+                <default>false</default>
+                <label>Industrial and Provident society</label>
+            </value>
+            <value>
+                <fullName>icvc-warrant</fullName>
+                <default>false</default>
+                <label>Investment company with umbrella capital</label>
+            </value>
+            <value>
+                <fullName>icvc-securities</fullName>
+                <default>false</default>
+                <label>Investment company with variable capital</label>
+            </value>
+            <value>
+                <fullName>investment-company-with-variable-capital</fullName>
+                <default>false</default>
+                <label>Investment company with variable  capital</label>
+            </value>
+            <value>
+                <fullName>icvc-umbrella</fullName>
+                <default>false</default>
+                <label>Investment company with  variable capital</label>
+            </value>
+            <value>
+                <fullName>llp</fullName>
+                <default>false</default>
+                <label>Limited liability partnership</label>
+            </value>
+            <value>
+                <fullName>limited-partnership</fullName>
+                <default>false</default>
+                <label>Limited partnership</label>
+            </value>
+            <value>
+                <fullName>northern-ireland</fullName>
+                <default>false</default>
+                <label>Northern Ireland company</label>
+            </value>
+            <value>
+                <fullName>old-public-company</fullName>
+                <default>false</default>
+                <label>Old public company</label>
+            </value>
+            <value>
+                <fullName>other</fullName>
+                <default>false</default>
+                <label>Other company type</label>
+            </value>
+            <value>
+                <fullName>oversea-company</fullName>
+                <default>false</default>
+                <label>Overseas company</label>
+            </value>
+            <value>
+                <fullName>registered-overseas-entity</fullName>
+                <default>false</default>
+                <label>Overseas entity</label>
+            </value>
+            <value>
+                <fullName>private-limited-guarant-nsc</fullName>
+                <default>false</default>
+                <label>Private limited by guarantee without share capital</label>
+            </value>
+            <value>
+                <fullName>ltd</fullName>
+                <default>false</default>
+                <label>Private limited company</label>
+            </value>
+            <value>
+                <fullName>private-limited-shares-section-30-exemption</fullName>
+                <default>false</default>
+                <label>Private Limited Company, use of &apos;Limited&apos; exemption</label>
+            </value>
+            <value>
+                <fullName>private-limited-guarant-nsc-limited-exemption</fullName>
+                <default>false</default>
+                <label>Private Limited Company by guarantee without share capital, use of &apos;Limited&apos; exemption</label>
+            </value>
+            <value>
+                <fullName>private-unlimited</fullName>
+                <default>false</default>
+                <label>Private unlimited company</label>
+            </value>
+            <value>
+                <fullName>private-unlimited-nsc</fullName>
+                <default>false</default>
+                <label>Private unlimited company without share capital</label>
+            </value>
+            <value>
+                <fullName>protected-cell-company</fullName>
+                <default>false</default>
+                <label>Protected cell company</label>
+            </value>
+            <value>
+                <fullName>plc</fullName>
+                <default>false</default>
+                <label>Public limited company</label>
+            </value>
+            <value>
+                <fullName>registered-society-non-jurisdictional</fullName>
+                <default>false</default>
+                <label>Registered society</label>
+            </value>
+            <value>
+                <fullName>royal-charter</fullName>
+                <default>false</default>
+                <label>Royal charter company</label>
+            </value>
+            <value>
+                <fullName>scottish-charitable-incorporated-organisation</fullName>
+                <default>false</default>
+                <label>Scottish charitable incorporated organisation</label>
+            </value>
+            <value>
+                <fullName>scottish-partnership</fullName>
+                <default>false</default>
+                <label>Scottish qualifying partnership</label>
+            </value>
+            <value>
+                <fullName>uk-establishment</fullName>
+                <default>false</default>
+                <label>UK establishment company</label>
+            </value>
+            <value>
+                <fullName>ukeig</fullName>
+                <default>false</default>
+                <label>United Kingdom Economic Interest Grouping</label>
+            </value>
+            <value>
+                <fullName>united-kingdom-societas</fullName>
+                <default>false</default>
+                <label>United Kingdom Societas</label>
+            </value>
+            <value>
+                <fullName>unregistered-company</fullName>
+                <default>false</default>
+                <label>Unregistered company</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

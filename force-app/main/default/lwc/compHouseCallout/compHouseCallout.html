@@ -322,12 +322,12 @@
                       <ul class="slds-has-dividers_top">
                         <template for:each={previosNamesData} for:item="name">
                           <li key={name.Id}>
-                            {name.name}:
+                            <span>{name.name}: </span>
                             <lightning-formatted-date-time
                               value={name.effectivex5ffrom}
                               time-zone="GMT"
                             ></lightning-formatted-date-time>
-                            -
+                            <span> - </span>
                             <lightning-formatted-date-time
                               value={name.ceasedx5fon}
                               time-zone="GMT"

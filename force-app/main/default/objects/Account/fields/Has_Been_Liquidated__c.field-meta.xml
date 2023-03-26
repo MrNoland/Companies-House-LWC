@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Has_Been_Liquidated__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>The flag indicating if the company has been liquidated in the past.</description>
+    <externalId>false</externalId>
+    <label>Has Been Liquidated?</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Checkbox</type>
+</CustomField>

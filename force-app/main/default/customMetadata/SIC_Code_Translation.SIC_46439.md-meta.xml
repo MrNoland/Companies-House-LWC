@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>SIC_46439</label>
+    <protected>false</protected>
+    <values>
+        <field>SIC_Code_and_Description__c</field>
+        <value xsi:type="xsd:string">46439 - Wholesale of radio, television goods &amp; electrical household appliances (other than records, tapes, CD's &amp; video tapes and the equipment used for playing them)</value>
+    </values>
+    <values>
+        <field>SIC_Code__c</field>
+        <value xsi:type="xsd:string">46439</value>
+    </values>
+    <values>
+        <field>SIC_Description__c</field>
+        <value xsi:type="xsd:string">Wholesale of radio, television goods &amp; electrical household appliances (other than records, tapes, CD's &amp; video tapes and the equipment used for playing them)</value>
+    </values>
+</CustomMetadata>

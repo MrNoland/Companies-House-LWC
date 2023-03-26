@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>SIC_9301</label>
+    <protected>false</protected>
+    <values>
+        <field>SIC_Code_and_Description__c</field>
+        <value xsi:type="xsd:string">9301 - Wash &amp; dry clean textile &amp; fur</value>
+    </values>
+    <values>
+        <field>SIC_Code__c</field>
+        <value xsi:type="xsd:string">9301</value>
+    </values>
+    <values>
+        <field>SIC_Description__c</field>
+        <value xsi:type="xsd:string">Wash &amp; dry clean textile &amp; fur</value>
+    </values>
+</CustomMetadata>

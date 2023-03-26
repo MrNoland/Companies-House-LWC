@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Jurisdiction__c</fullName>
+    <description>The jurisdiction specifies the political body responsible for the company.</description>
+    <externalId>false</externalId>
+    <label>Jurisdiction</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>england-wales</fullName>
+                <default>false</default>
+                <label>England/Wales</label>
+            </value>
+            <value>
+                <fullName>wales</fullName>
+                <default>false</default>
+                <label>Wales</label>
+            </value>
+            <value>
+                <fullName>scotland</fullName>
+                <default>false</default>
+                <label>Scotland</label>
+            </value>
+            <value>
+                <fullName>northern-ireland</fullName>
+                <default>false</default>
+                <label>Northern Ireland</label>
+            </value>
+            <value>
+                <fullName>european-union</fullName>
+                <default>false</default>
+                <label>European Union</label>
+            </value>
+            <value>
+                <fullName>united-kingdom</fullName>
+                <default>false</default>
+                <label>United Kingdom</label>
+            </value>
+            <value>
+                <fullName>england</fullName>
+                <default>false</default>
+                <label>England</label>
+            </value>
+            <value>
+                <fullName>noneu</fullName>
+                <default>false</default>
+                <label>Non EU</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

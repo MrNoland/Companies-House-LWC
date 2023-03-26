@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>SIC_95220</label>
+    <protected>false</protected>
+    <values>
+        <field>SIC_Code_and_Description__c</field>
+        <value xsi:type="xsd:string">95220 - Repair of household appliances and home and garden equipment</value>
+    </values>
+    <values>
+        <field>SIC_Code__c</field>
+        <value xsi:type="xsd:string">95220</value>
+    </values>
+    <values>
+        <field>SIC_Description__c</field>
+        <value xsi:type="xsd:string">Repair of household appliances and home and garden equipment</value>
+    </values>
+</CustomMetadata>

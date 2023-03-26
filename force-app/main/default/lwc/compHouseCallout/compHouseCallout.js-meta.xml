@@ -18,6 +18,14 @@
               type="String"
               description="Companies House Number"
             />
+            <property
+              name="hideSyncTab"
+              label="Hides the Sync tab"
+              required = "false"
+              type="Boolean"
+              default="true"
+              description="Checking this will hide the Sync tab"
+            />
         </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>
